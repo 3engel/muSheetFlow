@@ -4,6 +4,7 @@ import "react-image-crop/dist/ReactCrop.css";
 import { Card, CardDescription, CardHeader } from "./ui/card";
 import { Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { API_BASE_URL } from "@/lib/api";
 
 export default function CropTool({
   project,
@@ -35,7 +36,7 @@ export default function CropTool({
   }, [crop]);
 
   const imageUrl = useMemo(() => {
-    return `${import.meta.env.VITE_API_URL}/projects/${project}/overlay?base_rotation=${rotation}&do_split=${doSplit}&single_file=false`;
+    return `${API_BASE_URL}/projects/${project}/overlay?base_rotation=${rotation}&do_split=${doSplit}&single_file=false`;
   }, [project, rotation, doSplit]);
 
   return (

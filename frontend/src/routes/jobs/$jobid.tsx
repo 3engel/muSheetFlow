@@ -51,6 +51,7 @@ import { queryClient } from "@/main";
 import { toast } from "sonner";
 import { KEYS, VOICES } from "@/lib/constants";
 import { useTranslation } from "react-i18next";
+import { API_BASE_URL } from "@/lib/api";
 
 export const Route = createFileRoute("/jobs/$jobid")({
   component: RouteComponent,
@@ -209,7 +210,7 @@ function RouteComponent() {
               nativeButton={false}
               render={
                 <a
-                  href={`${import.meta.env.VITE_API_URL}/exports/${jobDetails.result_file}`}
+                  href={`${API_BASE_URL}/exports/${jobDetails.result_file}`}
                   download
                 />
               }
@@ -229,7 +230,7 @@ function RouteComponent() {
             >
               <div className="w-full h-40 overflow-hidden border cursor-zoom-in hover:opacity-80 relative">
                 <img
-                  src={`${import.meta.env.VITE_API_URL}/exports/${jobid}/${r.temp_file.replace(".pdf", "_thumb.jpg")}`}
+                  src={`${API_BASE_URL}/exports/${jobid}/${r.temp_file.replace(".pdf", "_thumb.jpg")}`}
                   className="absolute max-w-none"
                   onClick={() => setSelectedResult(r)}
                   style={{
@@ -372,7 +373,7 @@ function RouteComponent() {
           </SheetHeader>
           <div className="px-4 overflow-y-auto flex flex-col gap-2">
             <img
-              src={`${import.meta.env.VITE_API_URL}/exports/${jobid}/${selectedResult?.temp_file.replace(".pdf", "_thumb.jpg")}`}
+              src={`${API_BASE_URL}/exports/${jobid}/${selectedResult?.temp_file.replace(".pdf", "_thumb.jpg")}`}
               alt="Ausschnitt"
             />
           </div>

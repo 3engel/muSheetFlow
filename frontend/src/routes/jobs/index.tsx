@@ -43,6 +43,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { useTranslation } from "react-i18next";
+import { API_BASE_URL } from "@/lib/api";
 
 export const Route = createFileRoute("/jobs/")({
   component: JobsPage,
@@ -73,9 +74,7 @@ function JobsPage() {
   const refreshMutation = useMutation(jobRefreshMutationOptions());
 
   useEffect(() => {
-    const eventSource = new EventSource(
-      `${import.meta.env.VITE_API_URL}/jobs/stream`,
-    );
+    const eventSource = new EventSource(`${API_BASE_URL}/jobs/stream`);
 
     eventSource.onmessage = (event) => {
       try {
@@ -154,7 +153,8 @@ function JobsPage() {
                   >
                     <DropdownMenuGroup>
                       {(job.status === "awaiting_assignment" ||
-                        job.status === "completed") && (
+                        job.status === "completed" ||
+                        job.status === "pending") && (
                         <DropdownMenuItem
                           onClick={() =>
                             navigate({
@@ -170,7 +170,7 @@ function JobsPage() {
                         <DropdownMenuItem
                           onClick={() =>
                             window.open(
-                              `${import.meta.env.VITE_API_URL}/exports/${job.result_file}`,
+                              `${API_BASE_URL}/exports/${job.result_file}`,
                               "_blank",
                             )
                           }

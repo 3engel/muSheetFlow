@@ -1,0 +1,20 @@
+services:
+  backend:
+    image: ghcr.io/3engel/musheetflow-backend:latest
+    container_name: muSheetFlow_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - DATA_DIR=/app/data
+    restart: unless-stopped
+
+  frontend:
+    image: ghcr.io/3engel/musheetflow-frontend:latest
+    container_name: muSheetFlow_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped

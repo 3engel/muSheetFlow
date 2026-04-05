@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { RotateCw, RotateCcw, Loader2, InfoIcon } from "lucide-react";
+import { RotateCw, RotateCcw, Loader2 } from "lucide-react";
 import { Field, FieldGroup } from "./ui/field";
 import { Checkbox } from "./ui/checkbox";
 import { Label } from "./ui/label";
 import { Card, CardContent, CardDescription, CardHeader } from "./ui/card";
-import { Crop } from "react-image-crop";
 import { useTranslation } from "react-i18next";
+import { API_BASE_URL } from "@/lib/api";
 
 export default function RotationTool({
   project,
@@ -40,7 +40,7 @@ export default function RotationTool({
   };
 
   const imageUrl = useMemo(() => {
-    return `${import.meta.env.VITE_API_URL}/projects/${project}/overlay?base_rotation=${rotation}&do_split=${doSplit}&single_file=true&t=${Date.now()}`;
+    return `${API_BASE_URL}/projects/${project}/overlay?base_rotation=${rotation}&do_split=${doSplit}&single_file=true&t=${Date.now()}`;
   }, [project, rotation, doSplit]);
 
   useEffect(() => {
@@ -55,9 +55,7 @@ export default function RotationTool({
     <div className="space-y-4">
       <Card>
         <CardHeader>
-          <CardDescription>
-            {t("rotation.description")}
-          </CardDescription>
+          <CardDescription>{t("rotation.description")}</CardDescription>
         </CardHeader>
         <CardContent className="flex items-center justify-between">
           <FieldGroup className="max-w-sm">
@@ -68,9 +66,7 @@ export default function RotationTool({
                 checked={doSplit}
                 onCheckedChange={handleSplitChange}
               />
-              <Label htmlFor="split">
-                {t("rotation.splitA3")}
-              </Label>
+              <Label htmlFor="split">{t("rotation.splitA3")}</Label>
             </Field>
           </FieldGroup>
           <div className="flex gap-2">
