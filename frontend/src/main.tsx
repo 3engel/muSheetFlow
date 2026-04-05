@@ -7,6 +7,7 @@ import {
 } from "@tanstack/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./globals.css";
+import "./i18n/i18n";
 import { LucideIcon } from "lucide-react";
 import { routeTree } from "./routeTree.gen";
 import { NotFound } from "./components/NotFound";

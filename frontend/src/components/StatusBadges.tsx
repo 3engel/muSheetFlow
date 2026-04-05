@@ -1,6 +1,7 @@
 import { Loader2 } from "lucide-react";
 import { Badge } from "./ui/badge";
 import { Job } from "@/lib/types";
+import { useTranslation } from "react-i18next";
 
 export const SuccessBadge = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -63,18 +64,19 @@ export const ProcessingBadge = ({
 };
 
 export const JobStatus = ({ job }: { job: Job }) => {
+  const { t } = useTranslation();
   return job.status === "processing" ? (
     <ProcessingBadge processingStatus={`${job.progress} / ${job.total || "?"}`}>
-      Verarbeite...
+      {t("status.processing")}
     </ProcessingBadge>
   ) : job.status === "awaiting_assignment" ? (
-    <WarningBadge>Wartet auf Zuweisung</WarningBadge>
+    <WarningBadge>{t("status.waitingAssignment")}</WarningBadge>
   ) : job.status === "completed" ? (
-    <SuccessBadge>Abgeschlossen</SuccessBadge>
+    <SuccessBadge>{t("status.completed")}</SuccessBadge>
   ) : job.status === "failed" ? (
-    <DestructiveBadge>Fehler: {job.error}</DestructiveBadge>
+    <DestructiveBadge>{t("status.error", { error: job.error })}</DestructiveBadge>
   ) : job.status === "pending" ? (
-    <WarningBadge>Ausstehend</WarningBadge>
+    <WarningBadge>{t("status.pending")}</WarningBadge>
   ) : (
     <Badge>{job.status}</Badge>
   );

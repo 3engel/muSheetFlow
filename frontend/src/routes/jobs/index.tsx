@@ -42,6 +42,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { useTranslation } from "react-i18next";
 
 export const Route = createFileRoute("/jobs/")({
   component: JobsPage,
@@ -55,6 +56,7 @@ function JobsPage() {
   const [jobToDelete, setJobToDelete] = useState<Job | null>(null);
 
   const navigate = useNavigate({ from: Route.fullPath });
+  const { t } = useTranslation();
 
   const deleteMutation = useMutation({
     ...jobDeleteMutationOptions(),
@@ -63,7 +65,7 @@ function JobsPage() {
         queryKey: ["jobs"],
         refetchType: "all",
       });
-      toast.success(`Job ${job} erfolgreich gelöscht`);
+      toast.success(t("jobs.deleted", { name: job }));
       setJobToDelete(null);
     },
   });
@@ -91,16 +93,16 @@ function JobsPage() {
 
   return (
     <div className="flex flex-col gap-2">
-      <h1 className="text-2xl font-bold">Jobs</h1>
+      <h1 className="text-2xl font-bold">{t("jobs.title")}</h1>
 
       <Table className="rounded-header-md">
         <TableHeader className="bg-muted">
           <TableRow>
-            <TableHead>Projekt</TableHead>
-            <TableHead>Status</TableHead>
+            <TableHead>{t("jobs.project")}</TableHead>
+            <TableHead>{t("jobs.status")}</TableHead>
             <TableHead className="text-right">
               <Button
-                title="Refresh job list"
+                title={t("jobs.refresh")}
                 variant="ghost"
                 onClick={() => refreshMutation.mutate()}
                 disabled={refreshMutation.isPending || isPending}
@@ -151,16 +153,19 @@ function JobsPage() {
                     className="w-48"
                   >
                     <DropdownMenuGroup>
-                      <DropdownMenuItem
-                        onClick={() =>
-                          navigate({
-                            to: `/jobs/$jobid`,
-                            params: { jobid: job.id },
-                          })
-                        }
-                      >
-                        <Waypoints /> Instrumente zuweisen
-                      </DropdownMenuItem>
+                      {(job.status === "awaiting_assignment" ||
+                        job.status === "completed") && (
+                        <DropdownMenuItem
+                          onClick={() =>
+                            navigate({
+                              to: `/jobs/$jobid`,
+                              params: { jobid: job.id },
+                            })
+                          }
+                        >
+                          <Waypoints /> {t("jobs.assignInstruments")}
+                        </DropdownMenuItem>
+                      )}
                       {job.status === "completed" && job.result_file && (
                         <DropdownMenuItem
                           onClick={() =>
@@ -170,7 +175,7 @@ function JobsPage() {
                             )
                           }
                         >
-                          <Package /> ZIP Herunterladen
+                          <Package /> {t("jobs.downloadZip")}
                         </DropdownMenuItem>
                       )}
                     </DropdownMenuGroup>
@@ -180,7 +185,7 @@ function JobsPage() {
                         onClick={() => setJobToDelete(job)}
                         variant="destructive"
                       >
-                        <Trash2 /> Job löschen
+                        <Trash2 /> {t("jobs.deleteJob")}
                       </DropdownMenuItem>
                     </DropdownMenuGroup>
                   </DropdownMenuContent>
@@ -194,7 +199,7 @@ function JobsPage() {
                 colSpan={4}
                 className="text-center text-muted-foreground py-4"
               >
-                Keine Jobs vorhanden.
+                {t("jobs.noJobs")}
               </TableCell>
             </TableRow>
           )}
@@ -207,10 +212,11 @@ function JobsPage() {
       >
         <DialogContent className="top-[25%]">
           <DialogHeader>
-            <DialogTitle>Job {jobToDelete?.project} löschen</DialogTitle>
+            <DialogTitle>
+              {t("jobs.deleteTitle", { name: jobToDelete?.project })}
+            </DialogTitle>
             <DialogDescription>
-              Soll der Job <strong>{jobToDelete?.project}</strong> gelöscht
-              werden.
+              {t("jobs.deleteConfirm", { name: jobToDelete?.project })}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="mt-4">
@@ -218,14 +224,14 @@ function JobsPage() {
               variant="outline"
               onClick={() => setJobToDelete(null)}
             >
-              Abbrechen
+              {t("jobs.cancel")}
             </Button>
             <Button
               variant="destructive"
               disabled={deleteMutation.isPending}
               onClick={() => deleteMutation.mutate(jobToDelete!.id)}
             >
-              Unwiderruflich löschen
+              {t("jobs.deleteForever")}
             </Button>
           </DialogFooter>
         </DialogContent>

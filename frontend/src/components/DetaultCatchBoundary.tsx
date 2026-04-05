@@ -7,6 +7,7 @@ import {
 import type { ErrorComponentProps } from "@tanstack/react-router";
 import { Button } from "./ui/button";
 import { LinkButton } from "./ui/link-button";
+import { useTranslation } from "react-i18next";
 
 export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
   const router = useRouter();
@@ -14,6 +15,7 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
     strict: false,
     select: (state) => state.id === rootRouteId,
   });
+  const { t } = useTranslation();
 
   console.error(error);
 
@@ -26,14 +28,14 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
             router.invalidate();
           }}
         >
-          Try again
+          {t("common.tryAgain")}
         </Button>
         {isRoot ? (
           <LinkButton
             to="/"
             variant="secondary"
           >
-            Home
+            {t("common.home")}
           </LinkButton>
         ) : (
           <LinkButton
@@ -44,7 +46,7 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
               window.history.back();
             }}
           >
-            Go back
+            {t("common.goBack")}
           </LinkButton>
         )}
       </div>

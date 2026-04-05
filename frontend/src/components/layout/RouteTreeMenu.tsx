@@ -1,6 +1,7 @@
 import { useNavigate, type Route } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
 import { useRouterState } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import {
   Collapsible,
   CollapsibleContent,
@@ -87,6 +88,7 @@ function RouteTreeMenuItem({
 
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const isActive = normalizedFullPath === pathname;
   return (
     <SidebarMenuButton
@@ -97,7 +99,7 @@ function RouteTreeMenuItem({
       {route.options.staticData?.icon && (
         <route.options.staticData.icon className="size-4 text-muted-foreground" />
       )}
-      <span>{route.options.staticData?.title}</span>
+      <span>{t(route.options.staticData?.title ?? "")}</span>
 
       {hasArrow && (
         <CollapsibleTrigger

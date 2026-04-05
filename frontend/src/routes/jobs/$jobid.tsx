@@ -50,6 +50,7 @@ import { LoadingActivity } from "@/components/LoadingActivity";
 import { queryClient } from "@/main";
 import { toast } from "sonner";
 import { KEYS, VOICES } from "@/lib/constants";
+import { useTranslation } from "react-i18next";
 
 export const Route = createFileRoute("/jobs/$jobid")({
   component: RouteComponent,
@@ -94,7 +95,7 @@ function RouteComponent() {
         queryKey: ["jobs"],
         refetchType: "all",
       });
-      toast.success("Job erfolgreich fertiggestellt!");
+      toast.success(t("jobDetail.finalized"));
     },
   });
 
@@ -106,6 +107,7 @@ function RouteComponent() {
 
   const [selectedResult, setSelectedResult] = useState<JobResult | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const { t } = useTranslation();
 
   const changeLanguage = async (newLang: string) => {
     mutateJobLanguage.mutate({ newLang, jobId: jobid });
@@ -153,23 +155,23 @@ function RouteComponent() {
     <div className="flex flex-col gap-2 h-[calc(100vh-96px)]">
       <LoadingActivity showLoader={showLoader} />
       <div className="flex flex-col gap-2">
-        <h1 className="text-2xl font-bold">Instrumente zuweisen</h1>
+        <h1 className="text-2xl font-bold">{t("jobDetail.assignInstruments")}</h1>
         <div className="flex items-center gap-2 mt-1">
           <span className="">
-            Ausgabesprache der Instrumente für Dateinamen
+            {t("jobDetail.outputLanguage")}
           </span>
           <Select
             value={jobDetails.target_language}
             onValueChange={(value) => value && changeLanguage(value)}
           >
             <SelectTrigger className="">
-              <SelectValue placeholder="Sprache für Instrumente auswählen" />
+              <SelectValue placeholder={t("jobDetail.selectLanguage")} />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Sprachen</SelectLabel>
-                <SelectItem value="Deutsch">Deutsch</SelectItem>
-                <SelectItem value="English">English</SelectItem>
+                <SelectLabel>{t("jobDetail.languages")}</SelectLabel>
+                <SelectItem value="Deutsch">{t("jobDetail.german")}</SelectItem>
+                <SelectItem value="English">{t("jobDetail.english")}</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -186,7 +188,7 @@ function RouteComponent() {
             ) : (
               <Save />
             )}
-            Zwischenspeichern
+            {t("jobDetail.save")}
           </Button>
           <Button
             size="lg"
@@ -198,7 +200,7 @@ function RouteComponent() {
             ) : (
               <Package />
             )}
-            Fertigstellen
+            {t("jobDetail.finalize")}
           </Button>
           {jobDetails.status === "completed" && jobDetails.result_file && (
             <Button
@@ -213,7 +215,7 @@ function RouteComponent() {
               }
             >
               <Download />
-              ZIP Herunterladen
+              {t("jobDetail.downloadZip")}
             </Button>
           )}
         </div>
@@ -238,7 +240,7 @@ function RouteComponent() {
                 />
               </div>
               <CardHeader>
-                <CardDescription>Export Dateiname</CardDescription>
+                <CardDescription>{t("jobDetail.exportFilename")}</CardDescription>
                 <CardTitle
                   className="text-xs truncate"
                   title={getPreviewFileName(r)}
@@ -260,11 +262,11 @@ function RouteComponent() {
                     }}
                   >
                     <ComboboxInput
-                      placeholder="Instrument wählen"
+                      placeholder={t("jobDetail.selectInstrument")}
                       className="w-full"
                     />
                     <ComboboxContent>
-                      <ComboboxEmpty>Instrument nicht vorhanden.</ComboboxEmpty>
+                      <ComboboxEmpty>{t("jobDetail.noInstrument")}</ComboboxEmpty>
                       <ComboboxList>
                         {(item) => (
                           <ComboboxItem
@@ -288,17 +290,17 @@ function RouteComponent() {
                     }}
                   >
                     <SelectTrigger className="w-full text-xs">
-                      <SelectValue placeholder="Stimme" />
+                      <SelectValue placeholder={t("jobDetail.voice")} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        <SelectLabel>Stimme</SelectLabel>
+                        <SelectLabel>{t("jobDetail.voice")}</SelectLabel>
                         {VOICES.map((item) => (
                           <SelectItem
                             key={item === "" ? "none" : item}
                             value={item}
                           >
-                            {item === "" ? "Keine" : item}
+                            {item === "" ? t("jobDetail.none") : item}
                           </SelectItem>
                         ))}
                       </SelectGroup>
@@ -313,17 +315,17 @@ function RouteComponent() {
                     }}
                   >
                     <SelectTrigger className="w-full text-xs">
-                      <SelectValue placeholder="Tonart" />
+                      <SelectValue placeholder={t("jobDetail.key")} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        <SelectLabel>Tonart</SelectLabel>
+                        <SelectLabel>{t("jobDetail.key")}</SelectLabel>
                         {KEYS.map((item) => (
                           <SelectItem
                             key={item === "" ? "none" : item}
                             value={item}
                           >
-                            {item === "" ? "Keine" : item}
+                            {item === "" ? t("jobDetail.none") : item}
                           </SelectItem>
                         ))}
                       </SelectGroup>
@@ -365,7 +367,7 @@ function RouteComponent() {
       >
         <SheetContent className="min-w-full md:min-w-3/4 lg:min-w-1/2">
           <SheetHeader>
-            <SheetTitle>Vorschau / OCR Ergebnis</SheetTitle>
+            <SheetTitle>{t("jobDetail.previewOcr")}</SheetTitle>
             <SheetDescription>{selectedResult?.raw_ocr || ""}</SheetDescription>
           </SheetHeader>
           <div className="px-4 overflow-y-auto flex flex-col gap-2">

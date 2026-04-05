@@ -1,4 +1,5 @@
 import { Link, useMatches } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 
 import { Home } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -14,6 +15,7 @@ import {
 
 export function AppBreadcrumb({ classname }: { classname?: string }) {
   const matches = useMatches();
+  const { t } = useTranslation();
 
   if (matches.some((match) => match.status === "pending")) return null;
 
@@ -37,7 +39,7 @@ export function AppBreadcrumb({ classname }: { classname?: string }) {
           const crumb =
             typeof crumbFn === "function"
               ? crumbFn(match)
-              : match.staticData.title || "[UNSET]";
+              : t(match.staticData.title || "[UNSET]");
           return (
             <Fragment key={match.id}>
               {!isLast && (

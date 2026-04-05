@@ -17,6 +17,7 @@ import {
 import { FileInfo } from "@/lib/types";
 import { formatFileSize } from "@/lib/utils";
 import FileUpload from "./FileUpload";
+import { useTranslation } from "react-i18next";
 
 export default function FileList({
   project,
@@ -26,6 +27,7 @@ export default function FileList({
   files: FileInfo[];
 }) {
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set([]));
+  const { t, i18n } = useTranslation();
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
@@ -54,7 +56,7 @@ export default function FileList({
         queryKey: ["project-files", project],
         refetchType: "all",
       });
-      toast.success("Dateien erfolgreich gelöscht!");
+      toast.success(t("files.deleted"));
       setSelectedRows(new Set());
     },
   });
@@ -74,8 +76,7 @@ export default function FileList({
       </div>
       {files.length === 0 ? (
         <p className="text-muted-foreground text-center">
-          Keine Dateien vorhanden. Füge neue PDFs hinzu um diese weiter
-          verarbeiten zu können.
+          {t("files.empty")}
         </p>
       ) : (
         <Table>
@@ -98,7 +99,7 @@ export default function FileList({
                       <div className="flex items-center gap-2 text-xs text-muted-foreground">
                         <CheckSquare className="size-4" />
                         <span>
-                          {selectedRows.size} von {files.length} markiert
+                          {t("files.selected", { selected: selectedRows.size, total: files.length })}
                         </span>
                       </div>
                     </div>
@@ -117,15 +118,15 @@ export default function FileList({
                       }}
                     >
                       <CircleX />
-                      Ausgewählte löschen
+                      {t("files.deleteSelected")}
                     </Button>
                   </div>
                 ) : (
-                  <span>Dateiname</span>
+                  <span>{t("files.filename")}</span>
                 )}
               </TableHead>
-              <TableHead className="text-right">Größe</TableHead>
-              <TableHead className="text-right">Erstellt am</TableHead>
+              <TableHead className="text-right">{t("files.size")}</TableHead>
+              <TableHead className="text-right">{t("files.createdAt")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -147,7 +148,7 @@ export default function FileList({
                   {formatFileSize(file.size)}
                 </TableCell>
                 <TableCell className="text-right">
-                  {new Date(file.created_at).toLocaleString("de-DE", {
+                  {new Date(file.created_at).toLocaleString(i18n.language === "de" ? "de-DE" : "en-US", {
                     dateStyle: "short",
                     timeStyle: "short",
                   })}

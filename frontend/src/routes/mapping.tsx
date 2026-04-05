@@ -20,19 +20,21 @@ import { Mapping } from "@/lib/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { queryClient } from "@/main";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 export const Route = createFileRoute("/mapping")({
   component: MappingPage,
   loader: async ({ context: { queryClient } }) => {
     return await queryClient.ensureQueryData(mappingsQueryOptions());
   },
-  staticData: { title: "Instrumente", icon: TableIcon, sortIndex: 30 },
+  staticData: { title: "nav.mapping", icon: TableIcon, sortIndex: 30 },
 });
 
 function MappingPage() {
   const { data: mappings } = useSuspenseQuery(mappingsQueryOptions());
   const [mappingCopy, setMappingCopy] = useState(JSON.stringify(mappings));
   const [mapping, setMapping] = useState<Mapping[]>(mappings || []);
+  const { t } = useTranslation();
 
   const saveMappingMutation = useMutation({
     ...mappingSaveMutationOptions(),
@@ -41,7 +43,7 @@ function MappingPage() {
         queryKey: ["mapping"],
         refetchType: "all",
       });
-      toast.success("Mapping erfolgreich gespeichert!");
+      toast.success(t("mapping.saved"));
       setMappingCopy(JSON.stringify(mapping));
     },
   });
@@ -69,10 +71,9 @@ function MappingPage() {
   return (
     <div className="flex flex-col h-[calc(100vh-96px)] gap-2">
       <div className="flex flex-col gap-2">
-        <h1 className="text-2xl font-bold">Instrumente</h1>
+        <h1 className="text-2xl font-bold">{t("mapping.title")}</h1>
         <p className="mb-2">
-          Hier können Sie die Zuordnung von OCR-erkannten Suchbegriffen zu den
-          entsprechenden Instrumentennamen bearbeiten.
+          {t("mapping.description")}
         </p>
         <div className="flex justify-end gap-2">
           <Button
@@ -80,7 +81,7 @@ function MappingPage() {
             size="lg"
             onClick={addRow}
           >
-            <Plus /> Neues Mapping
+            <Plus /> {t("mapping.newMapping")}
           </Button>
           <Button
             onClick={() => saveMappingMutation.mutate(mapping)}
@@ -95,7 +96,7 @@ function MappingPage() {
             ) : (
               <Save />
             )}
-            Speichern
+            {t("mapping.save")}
           </Button>
         </div>
       </div>
@@ -103,9 +104,9 @@ function MappingPage() {
         <Table className="rounded-header-md">
           <TableHeader className="bg-muted">
             <TableRow>
-              <TableHead>Suchbegriff (Regex/Wort)</TableHead>
-              <TableHead>Deutsch</TableHead>
-              <TableHead>English</TableHead>
+              <TableHead>{t("mapping.term")}</TableHead>
+              <TableHead>{t("mapping.german")}</TableHead>
+              <TableHead>{t("mapping.english")}</TableHead>
               <TableHead></TableHead>
             </TableRow>
           </TableHeader>
@@ -116,21 +117,21 @@ function MappingPage() {
                   <Input
                     value={row.Term}
                     onChange={(e) => updateRow(idx, "Term", e.target.value)}
-                    placeholder="z.B. flöte"
+                    placeholder={t("mapping.termPlaceholder")}
                   />
                 </TableCell>
                 <TableCell>
                   <Input
                     value={row.Deutsch}
                     onChange={(e) => updateRow(idx, "Deutsch", e.target.value)}
-                    placeholder="Flöte"
+                    placeholder={t("mapping.germanPlaceholder")}
                   />
                 </TableCell>
                 <TableCell>
                   <Input
                     value={row.English}
                     onChange={(e) => updateRow(idx, "English", e.target.value)}
-                    placeholder="Flute"
+                    placeholder={t("mapping.englishPlaceholder")}
                   />
                 </TableCell>
                 <TableCell className="w-16 shrink-0">

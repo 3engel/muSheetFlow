@@ -6,6 +6,7 @@ import { Checkbox } from "./ui/checkbox";
 import { Label } from "./ui/label";
 import { Card, CardContent, CardDescription, CardHeader } from "./ui/card";
 import { Crop } from "react-image-crop";
+import { useTranslation } from "react-i18next";
 
 export default function RotationTool({
   project,
@@ -23,6 +24,7 @@ export default function RotationTool({
   const [rotation, setRotation] = useState<number>(rotationValue);
   const [doSplit, setDoSplit] = useState<boolean>(doSplitValue);
   const [loading, setLoading] = useState(true);
+  const { t } = useTranslation();
 
   const handleRotateRight = () => {
     setLoading(true);
@@ -54,8 +56,7 @@ export default function RotationTool({
       <Card>
         <CardHeader>
           <CardDescription>
-            Drehe die Noten in aufrechte Position. Für bessere Performance wird
-            hier nur Seite 1 angezeigt.
+            {t("rotation.description")}
           </CardDescription>
         </CardHeader>
         <CardContent className="flex items-center justify-between">
@@ -68,7 +69,7 @@ export default function RotationTool({
                 onCheckedChange={handleSplitChange}
               />
               <Label htmlFor="split">
-                PDF mittig schneiden (z.B. wenn A3 -&gt; 2x A4)
+                {t("rotation.splitA3")}
               </Label>
             </Field>
           </FieldGroup>
@@ -77,13 +78,13 @@ export default function RotationTool({
               variant="outline"
               onClick={handleRotateLeft}
             >
-              <RotateCcw /> Links
+              <RotateCcw /> {t("rotation.left")}
             </Button>
             <Button
               variant="outline"
               onClick={handleRotateRight}
             >
-              <RotateCw /> Rechts
+              <RotateCw /> {t("rotation.right")}
             </Button>
           </div>
         </CardContent>

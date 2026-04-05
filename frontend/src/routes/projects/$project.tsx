@@ -8,6 +8,7 @@ import ExportSettings from "@/components/ExportSettings";
 import type { Crop } from "react-image-crop";
 import { projectFilesQueryOptions } from "@/lib/queries";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useTranslation } from "react-i18next";
 export const Route = createFileRoute("/projects/$project")({
   component: RouteComponent,
   loader: async ({ params, context: { queryClient } }) => {
@@ -38,6 +39,7 @@ function RouteComponent() {
     width: 90,
     height: 90,
   });
+  const { t } = useTranslation();
 
   return (
     <div className="flex flex-col gap-2">
@@ -47,24 +49,24 @@ function RouteComponent() {
           variant="line"
           className="mx-auto"
         >
-          <TabsTrigger value="upload">PDFs verwalten</TabsTrigger>
+          <TabsTrigger value="upload">{t("project.managePdfs")}</TabsTrigger>
           <TabsTrigger
             value="rotate"
             disabled={files.length === 0}
           >
-            Formatierung anpassen
+            {t("project.adjustFormatting")}
           </TabsTrigger>
           <TabsTrigger
             value="crop"
             disabled={files.length === 0}
           >
-            Zuschnitt
+            {t("project.crop")}
           </TabsTrigger>
           <TabsTrigger
             value="settings"
             disabled={files.length === 0}
           >
-            Exporteinstellungen
+            {t("project.exportSettings")}
           </TabsTrigger>
         </TabsList>
         <TabsContent value="upload">

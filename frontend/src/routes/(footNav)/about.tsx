@@ -6,6 +6,7 @@ import {
   ScanSearch,
   Workflow,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { Badge } from "@/components/ui/badge";
 import {
@@ -18,12 +19,13 @@ import {
 
 export const Route = createFileRoute("/(footNav)/about")({
   component: RouteComponent,
-  staticData: { title: "Über" },
+  staticData: { title: "nav.about" },
 });
 
 function RouteComponent() {
   const appTitle = import.meta.env.VITE_APP_TITLE || "muSheetFlow";
   const version = import.meta.env.PACKAGE_VERSION || "dev";
+  const { t } = useTranslation();
 
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-6 pb-8">
@@ -35,15 +37,14 @@ function RouteComponent() {
               className="gap-1.5"
             >
               <BadgeInfo />
-              Über diese Anwendung
+              {t("about.badge")}
             </Badge>
             <div className="space-y-2">
               <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
                 {appTitle}
               </h1>
               <p className="max-w-2xl text-base text-muted-foreground md:text-lg">
-                Eine Arbeitsumgebung zum Verwalten, Aufbereiten und Exportieren
-                von Noten-PDFs mit OCR-gestützter Instrumentenerkennung.
+                {t("about.description")}
               </p>
             </div>
           </div>
@@ -56,11 +57,10 @@ function RouteComponent() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <LibraryBig className="size-5 text-teal-600" />
-              Projekte verwalten
+              {t("about.projectManagement")}
             </CardTitle>
             <CardDescription>
-              PDFs werden projektbezogen organisiert und für die weitere
-              Verarbeitung gesammelt.
+              {t("about.projectManagementDesc")}
             </CardDescription>
           </CardHeader>
         </Card>
@@ -69,11 +69,10 @@ function RouteComponent() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <ScanSearch className="size-5 text-teal-600" />
-              OCR & Erkennung
+              {t("about.ocrRecognition")}
             </CardTitle>
             <CardDescription>
-              Instrumente werden aus den Noten automatisch erkannt und für den
-              Export vorbereitet.
+              {t("about.ocrRecognitionDesc")}
             </CardDescription>
           </CardHeader>
         </Card>
@@ -82,11 +81,10 @@ function RouteComponent() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Workflow className="size-5 text-teal-600" />
-              Batch-Export
+              {t("about.batchExport")}
             </CardTitle>
             <CardDescription>
-              Zuschnitt, Rotation, Aufbereitung und Ausgabe laufen über einen
-              nachvollziehbaren Job-Workflow.
+              {t("about.batchExportDesc")}
             </CardDescription>
           </CardHeader>
         </Card>
@@ -95,11 +93,10 @@ function RouteComponent() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Languages className="size-5 text-teal-600" />
-              Mehrsprachige Ausgabe
+              {t("about.multiLanguage")}
             </CardTitle>
             <CardDescription>
-              Instrumentnamen können für Dateinamen und Ergebnislisten in
-              verschiedenen Sprachen ausgegeben werden.
+              {t("about.multiLanguageDesc")}
             </CardDescription>
           </CardHeader>
         </Card>
@@ -108,38 +105,34 @@ function RouteComponent() {
       <section className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
         <Card className="h-full card-highlight">
           <CardHeader>
-            <CardTitle>Workflow</CardTitle>
+            <CardTitle>{t("about.workflow")}</CardTitle>
             <CardDescription>
-              Der typische Ablauf innerhalb der Anwendung.
+              {t("about.workflowDesc")}
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-3 md:grid-cols-2">
             <div className="rounded-xl bg-muted/40 p-4 ring-1 ring-foreground/8">
-              <div className="mb-2 text-sm font-medium">1. Projekt anlegen</div>
+              <div className="mb-2 text-sm font-medium">{t("about.step1Title")}</div>
               <p className="text-sm text-muted-foreground">
-                Ein Musikstück oder Satz wird als Projekt erstellt und dient
-                als Container für alle zugehörigen PDFs.
+                {t("about.step1Desc")}
               </p>
             </div>
             <div className="rounded-xl bg-muted/40 p-4 ring-1 ring-foreground/8">
-              <div className="mb-2 text-sm font-medium">2. Dateien hochladen</div>
+              <div className="mb-2 text-sm font-medium">{t("about.step2Title")}</div>
               <p className="text-sm text-muted-foreground">
-                Mehrere PDFs können gesammelt hochgeladen und anschließend im
-                Projekt weiterbearbeitet werden.
+                {t("about.step2Desc")}
               </p>
             </div>
             <div className="rounded-xl bg-muted/40 p-4 ring-1 ring-foreground/8">
-              <div className="mb-2 text-sm font-medium">3. Export konfigurieren</div>
+              <div className="mb-2 text-sm font-medium">{t("about.step3Title")}</div>
               <p className="text-sm text-muted-foreground">
-                Rotation, Zuschnitt, Split und Sprachziel werden passend zum
-                Material festgelegt.
+                {t("about.step3Desc")}
               </p>
             </div>
             <div className="rounded-xl bg-muted/40 p-4 ring-1 ring-foreground/8">
-              <div className="mb-2 text-sm font-medium">4. Ergebnisse pruefen</div>
+              <div className="mb-2 text-sm font-medium">{t("about.step4Title")}</div>
               <p className="text-sm text-muted-foreground">
-                Erkannte Instrumente lassen sich kontrollieren, korrigieren und
-                danach gesammelt finalisieren.
+                {t("about.step4Desc")}
               </p>
             </div>
           </CardContent>
@@ -147,10 +140,9 @@ function RouteComponent() {
 
         <Card className="h-full card-highlight">
           <CardHeader>
-            <CardTitle>Technik</CardTitle>
+            <CardTitle>{t("about.tech")}</CardTitle>
             <CardDescription>
-              Die App kombiniert ein React-Frontend mit einem Python-Backend
-              fuer PDF- und OCR-Verarbeitung.
+              {t("about.techDesc")}
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-wrap gap-2">

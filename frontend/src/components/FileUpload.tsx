@@ -23,6 +23,7 @@ import {
   SheetTrigger,
 } from "./ui/sheet";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 type FileUploadProps = {
   project: string;
@@ -36,6 +37,7 @@ export default function FileUpload({
   const [files, setFiles] = useState<File[]>([]);
   const [uploadOpen, setUploadOpen] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const { t } = useTranslation();
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setFiles((previousFiles) => {
@@ -75,7 +77,7 @@ export default function FileUpload({
       setFiles([]);
       onUploadComplete();
       setUploadOpen(false);
-      toast.success("Dateien erfolgreich hochgeladen!");
+      toast.success(t("upload.success"));
     },
   });
 
@@ -110,15 +112,15 @@ export default function FileUpload({
       <SheetTrigger
         render={
           <Button>
-            <FilePlus /> PDFs zum Projekt hinzufügen
+            <FilePlus /> {t("upload.addPdfs")}
           </Button>
         }
       />
       <SheetContent className="min-w-full md:min-w-3/4 lg:min-w-1/2">
         <SheetHeader>
-          <SheetTitle>Neue PDFs hochladen</SheetTitle>
+          <SheetTitle>{t("upload.title")}</SheetTitle>
           <SheetDescription>
-            Ziehe Dateien hierher oder wähle sie gezielt aus.
+            {t("upload.description")}
           </SheetDescription>
         </SheetHeader>
         <div className="overflow-y-auto px-4 flex flex-col gap-4">
@@ -138,12 +140,11 @@ export default function FileUpload({
               </div>
               <p className="text-base font-medium">
                 {isDragActive
-                  ? "Dateien hier loslassen"
-                  : "PDFs per Drag-and-Drop hinzufügen"}
+                  ? t("upload.dropHere")
+                  : t("upload.dragDrop")}
               </p>
               <p className="mt-1 max-w-sm text-sm text-muted-foreground">
-                Mehrere Dateien sind möglich. Bereits ausgewählte Dateien
-                bleiben in der Warteschlange erhalten.
+                {t("upload.multipleAllowed")}
               </p>
               <Button
                 className="mt-4"
@@ -151,18 +152,18 @@ export default function FileUpload({
                 type="button"
                 onClick={open}
               >
-                Dateien auswählen
+                {t("upload.selectFiles")}
               </Button>
             </div>
           </div>
 
           <div className="flex justify-between">
             <div className="flex flex-col">
-              <h2 className="font-semibold">Warteschlange</h2>
+              <h2 className="font-semibold">{t("upload.queue")}</h2>
               <span className="text-sm text-muted-foreground">
                 {files.length === 0
-                  ? "Noch keine Dateien ausgewaehlt."
-                  : `${files.length} Datei${files.length === 1 ? "" : "en"} bereit zum Upload.`}
+                  ? t("upload.noFiles")
+                  : t("upload.filesReady", { count: files.length })}
               </span>
             </div>
             {files.length > 0 && (
@@ -173,7 +174,7 @@ export default function FileUpload({
                 onClick={() => setFiles([])}
               >
                 <CopyX />
-                Warteschlange leeren
+                {t("upload.clearQueue")}
               </Button>
             )}
           </div>
@@ -199,7 +200,7 @@ export default function FileUpload({
                   type="button"
                   disabled={uploadMutation.isPending}
                   onClick={() => removePendingFile(file)}
-                  aria-label={`${file.name} entfernen`}
+                  aria-label={t("upload.remove", { name: file.name })}
                 >
                   <X />
                 </Button>
@@ -228,11 +229,11 @@ export default function FileUpload({
               {uploadMutation.isPending
                 ? uploadProgress > 0 && uploadProgress < 100
                   ? `${uploadProgress}%`
-                  : "Dateien werden hochgeladen"
-                : "Upload starten"}
+                  : t("upload.uploading")
+                : t("upload.startUpload")}
             </span>
           </Button>
-          <SheetClose render={<Button variant="outline">Abbrechen</Button>} />
+          <SheetClose render={<Button variant="outline">{t("upload.cancel")}</Button>} />
         </SheetFooter>
       </SheetContent>
     </Sheet>

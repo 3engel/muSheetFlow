@@ -31,6 +31,7 @@ import {
 } from "./ui/select";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { InfoIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function ExportSettings({
   project,
@@ -50,6 +51,7 @@ export default function ExportSettings({
   const [jpegQuality, setJpegQuality] = useState(75);
   const [targetLang, setTargetLang] = useState("Deutsch");
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   const exportMutation = useMutation({
     mutationFn: async () => {
@@ -68,7 +70,7 @@ export default function ExportSettings({
       onExportStarted();
     },
     onError: () => {
-      alert("Fehler beim Starten des Exports.");
+      alert(t("export.error"));
     },
   });
 
@@ -80,7 +82,7 @@ export default function ExportSettings({
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Exporteinstellungen</CardTitle>
+          <CardTitle>{t("export.title")}</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <div className="grid grid-cols-2 gap-8">
@@ -93,10 +95,9 @@ export default function ExportSettings({
               />
 
               <FieldContent>
-                <FieldTitle>Auto-Begradigung</FieldTitle>
+                <FieldTitle>{t("export.deskew")}</FieldTitle>
                 <FieldDescription>
-                  Begradigt automatisch schief eingescannten Noten. Funktioniert
-                  am besten, wenn die Schieflage nicht zu extrem ist.
+                  {t("export.deskewDesc")}
                 </FieldDescription>
               </FieldContent>
             </Field>
@@ -109,17 +110,15 @@ export default function ExportSettings({
               />
 
               <FieldContent>
-                <FieldTitle>Auto-Kontrast</FieldTitle>
+                <FieldTitle>{t("export.contrast")}</FieldTitle>
                 <FieldDescription>
-                  Verbessert automatisch den Kontrast der eingescannten Noten.
-                  Funktioniert am besten, wenn die Noten leicht verblasst oder
-                  ungleichmäßig beleuchtet sind.
+                  {t("export.contrastDesc")}
                 </FieldDescription>
               </FieldContent>
             </Field>
             <div className="flex w-full flex-col gap-4">
               <div className="flex items-center justify-between">
-                <Label htmlFor="quality">Ausgabequalität</Label>
+                <Label htmlFor="quality">{t("export.quality")}</Label>
                 <span className="text-sm text-muted-foreground font-semibold">
                   {jpegQuality}%
                 </span>
@@ -134,7 +133,7 @@ export default function ExportSettings({
             </div>
 
             <Field>
-              <FieldLabel>OCR Sprache für Texterkennung</FieldLabel>
+              <FieldLabel>{t("export.ocrLanguage")}</FieldLabel>
               <Select
                 onValueChange={(value) => {
                   if (value) setTargetLang(value);
@@ -142,12 +141,12 @@ export default function ExportSettings({
                 value={targetLang}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="OCR Sprache wählen" />
+                  <SelectValue placeholder={t("export.selectLanguage")} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="Deutsch">Deutsch</SelectItem>
-                    <SelectItem value="English">English</SelectItem>
+                    <SelectItem value="Deutsch">{t("export.german")}</SelectItem>
+                    <SelectItem value="English">{t("export.english")}</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -155,10 +154,9 @@ export default function ExportSettings({
           </div>
           <Alert>
             <InfoIcon />
-            <AlertTitle>Hinweis zur Hintergrundverarbeitung</AlertTitle>
+            <AlertTitle>{t("export.bgNote")}</AlertTitle>
             <AlertDescription>
-              Die Dokumente werden im Hintergrund verarbeitet inkl.
-              Texterkennung. Das Zuweisen der Instrumente kann danach erfolgen.
+              {t("export.bgNoteDesc")}
             </AlertDescription>
           </Alert>
         </CardContent>
@@ -169,8 +167,8 @@ export default function ExportSettings({
             disabled={exportMutation.isPending}
           >
             {exportMutation.isPending
-              ? "Starte..."
-              : "Hintergrundverarbeitung starten"}
+              ? t("export.starting")
+              : t("export.startProcessing")}
           </Button>
         </CardFooter>
       </Card>

@@ -39,6 +39,7 @@ import { queryClient } from "@/main";
 import { Project } from "@/lib/types";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 export const Route = createFileRoute("/projects/")({
   component: RouteComponent,
@@ -52,12 +53,13 @@ function RouteComponent() {
   const [projectToDelete, setProjectToDelete] = useState<Project | null>(null);
   const { data: projects } = useSuspenseQuery(projectsQueryOptions());
   const navigate = useNavigate({ from: Route.fullPath });
+  const { t } = useTranslation();
 
   const newProjectMutation = useMutation({
     ...projectCreateMutationOptions(),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["projects"] });
-      toast.success(`Projekt "${variables}" wurde erstellt!`);
+      toast.success(t("projects.created", { name: variables }));
       navigate({ to: `/projects/$project`, params: { project: variables } });
     },
   });
@@ -69,7 +71,7 @@ function RouteComponent() {
         queryKey: ["projects"],
         refetchType: "all",
       });
-      toast.success(`Projekt "${projectToDelete?.name}" wurde gelöscht!`);
+      toast.success(t("projects.deleted", { name: projectToDelete?.name }));
       setProjectToDelete(null);
     },
   });
@@ -82,18 +84,16 @@ function RouteComponent() {
             <Plus className="h-6 w-6 text-primary" />
           </div>
           <CardTitle className="text-2xl font-bold">
-            Neues Notenprojekt
+            {t("projects.newProject")}
           </CardTitle>
           <CardDescription className="text-base mt-2">
-            Erstelle ein neues Projekt (z.B. den Namen des Musikstücks), um
-            Noten hochzuladen und in einem Batch automatisiert verarbeiten zu
-            lassen.
+            {t("projects.newProjectDesc")}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4 pt-4">
           <Input
             className="h-12 text-lg shadow-sm"
-            placeholder="z.B. Bohemian Tequila, Böhmischer Traum, etc."
+            placeholder={t("projects.placeholder")}
             value={newProjectName}
             onChange={(e) => setNewProjectName(e.target.value)}
             onKeyDown={(e) =>
@@ -111,10 +111,10 @@ function RouteComponent() {
             {newProjectMutation.isPending ? (
               <>
                 <Loader2 className="animate-spin" />
-                "Erstelle..."
+                {t("projects.creating")}
               </>
             ) : (
-              "Projekt starten"
+              t("projects.startProject")
             )}
           </Button>
         </CardFooter>
@@ -123,7 +123,7 @@ function RouteComponent() {
         <div className="flex flex-col items-center gap-2 mb-4">
           <Separator />
           <h3 className="font-medium uppercase tracking-wider  px-4">
-            Oder Projekt fortsetzen
+            {t("projects.continueProject")}
           </h3>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 border-t-0">
@@ -145,13 +145,13 @@ function RouteComponent() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="flex items-center justify-end gap-2">
-                <span>enthält</span>
+                <span>{t("projects.contains")}</span>
                 <Badge
                   variant="secondary"
                   className="text-sm p-3"
                 >
                   <FileText />
-                  {p.file_count} {p.file_count === 1 ? "Datei" : "Dateien"}
+                  {t("projects.file", { count: p.file_count })}
                 </Badge>
               </CardContent>
               <CardFooter className="gap-2 flex-col">
@@ -165,7 +165,7 @@ function RouteComponent() {
                     })
                   }
                 >
-                  <Edit2 /> Bearbeiten
+                  <Edit2 /> {t("projects.edit")}
                 </Button>
                 <Button
                   variant="destructive"
@@ -175,7 +175,7 @@ function RouteComponent() {
                     setProjectToDelete(p);
                   }}
                 >
-                  <Trash2 /> Löschen
+                  <Trash2 /> {t("projects.delete")}
                 </Button>
               </CardFooter>
             </Card>
@@ -189,15 +189,14 @@ function RouteComponent() {
           <DialogContent>
             <DialogHeader>
               <DialogTitle>
-                Projekt "{projectToDelete?.name}" löschen
+                {t("projects.deleteTitle", { name: projectToDelete?.name })}
               </DialogTitle>
               <DialogDescription
                 className="flex flex-col gap-2"
                 render={<div />}
               >
                 <p>
-                  Möchtest du das Projekt "{projectToDelete?.name}" wirklich
-                  löschen?
+                  {t("projects.deleteConfirm", { name: projectToDelete?.name })}
                 </p>
                 <Alert
                   variant="destructive"
@@ -206,7 +205,7 @@ function RouteComponent() {
                   <AlertCircleIcon />
 
                   <AlertDescription>
-                    Diese Aktion kann nicht rückgängig gemacht werden.
+                    {t("projects.deleteWarning")}
                   </AlertDescription>
                 </Alert>
               </DialogDescription>
@@ -216,7 +215,7 @@ function RouteComponent() {
                 variant="outline"
                 onClick={() => setProjectToDelete(null)}
               >
-                Abbrechen
+                {t("projects.cancel")}
               </Button>
               <Button
                 variant="destructive"
@@ -224,7 +223,7 @@ function RouteComponent() {
                   deleteProjectMutation.mutate(projectToDelete!.name)
                 }
               >
-                Unwiderruflich löschen
+                {t("projects.deleteForever")}
               </Button>
             </DialogFooter>
           </DialogContent>

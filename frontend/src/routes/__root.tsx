@@ -8,7 +8,7 @@ type MyRouterContext = {
 };
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
-  staticData: { title: "Home" },
+  staticData: { title: "nav.home" },
   component: () => (
     <ThemeProvider
       attribute="class"

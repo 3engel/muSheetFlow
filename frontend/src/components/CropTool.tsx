@@ -3,6 +3,7 @@ import ReactCrop, { type Crop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { Card, CardDescription, CardHeader } from "./ui/card";
 import { Loader2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function CropTool({
   project,
@@ -27,6 +28,7 @@ export default function CropTool({
     },
   );
   const [loading, setLoading] = useState(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     onCropChange(crop);
@@ -42,13 +44,10 @@ export default function CropTool({
         <CardHeader>
           <CardDescription>
             <p>
-              Ziehe mit der Maus den Bereich auf, der erhalten bleiben soll
-              (alles außerhalb wird weggeschnitten).
+              {t("crop.instruction")}
             </p>
             <p>
-              Das blaue Rechteck repräsentiert das spätere DIN A4-Blatt. Hierbei
-              werden alle Noten deines Projekts zum Abgleichen "übereinander"
-              gelegt.
+              {t("crop.a4Info")}
             </p>
           </CardDescription>
         </CardHeader>
@@ -59,7 +58,7 @@ export default function CropTool({
           <div className="absolute inset-0 bg-muted-foreground/20 flex flex-col justify-center items-center z-10">
             <div className="flex flex-col gap-1 justify-center items-center">
               <Loader2 className="h-10 w-10 animate-spin " />
-              Lade Vorschau mit allen überlagerten Notenblättern...
+              {t("crop.loading")}
             </div>
           </div>
         )}
