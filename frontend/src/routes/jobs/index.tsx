@@ -192,9 +192,9 @@ function JobsPage() {
             <TableRow>
               <TableCell
                 colSpan={4}
-                className="text-center text-slate-500 py-8"
+                className="text-center text-muted-foreground py-4"
               >
-                Noch keine Jobs vorhanden.
+                Keine Jobs vorhanden.
               </TableCell>
             </TableRow>
           )}

@@ -26,11 +26,6 @@ export function RouteTreeMenu({ routes }: { routes: Route[] }) {
       route.id.indexOf("/$") === -1,
   );
 
-  console.warn(
-    "RouteTreeMenu: The following routes are being rendered in the menu:",
-    routes,
-  );
-
   const [isOpen, setIsOpen] = useState(true);
 
   const filterChildren = (route: Route) => {

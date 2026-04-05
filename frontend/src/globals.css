@@ -147,3 +147,7 @@
     border-top-right-radius: var(--radius-md);
   }
 }
+
+.card-highlight {
+  @apply bg-linear-to-br from-teal-600/10 via-background to-amber-500/10 ring-1 ring-foreground/10;
+}

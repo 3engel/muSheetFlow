@@ -22,7 +22,7 @@ export const Route = createFileRoute("/(footNav)/about")({
 });
 
 function RouteComponent() {
-  const appTitle = import.meta.env.VITE_APP_TITLE || "ScoreFlow";
+  const appTitle = import.meta.env.VITE_APP_TITLE || "muSheetFlow";
   const version = import.meta.env.PACKAGE_VERSION || "dev";
 
   return (
@@ -43,7 +43,7 @@ function RouteComponent() {
               </h1>
               <p className="max-w-2xl text-base text-muted-foreground md:text-lg">
                 Eine Arbeitsumgebung zum Verwalten, Aufbereiten und Exportieren
-                von Noten-PDFs mit OCR-gestuetzter Instrumentenerkennung.
+                von Noten-PDFs mit OCR-gestützter Instrumentenerkennung.
               </p>
             </div>
           </div>
@@ -52,53 +52,53 @@ function RouteComponent() {
       </section>
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <Card>
+        <Card className="card-highlight">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <LibraryBig className="size-5 text-teal-600" />
               Projekte verwalten
             </CardTitle>
             <CardDescription>
-              PDFs werden projektbezogen organisiert und fuer die weitere
+              PDFs werden projektbezogen organisiert und für die weitere
               Verarbeitung gesammelt.
             </CardDescription>
           </CardHeader>
         </Card>
 
-        <Card>
+        <Card className="card-highlight">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <ScanSearch className="size-5 text-teal-600" />
               OCR & Erkennung
             </CardTitle>
             <CardDescription>
-              Instrumente werden aus den Noten automatisch erkannt und fuer den
+              Instrumente werden aus den Noten automatisch erkannt und für den
               Export vorbereitet.
             </CardDescription>
           </CardHeader>
         </Card>
 
-        <Card>
+        <Card className="card-highlight">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Workflow className="size-5 text-teal-600" />
               Batch-Export
             </CardTitle>
             <CardDescription>
-              Zuschnitt, Rotation, Aufbereitung und Ausgabe laufen ueber einen
+              Zuschnitt, Rotation, Aufbereitung und Ausgabe laufen über einen
               nachvollziehbaren Job-Workflow.
             </CardDescription>
           </CardHeader>
         </Card>
 
-        <Card>
+        <Card className="card-highlight">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Languages className="size-5 text-teal-600" />
               Mehrsprachige Ausgabe
             </CardTitle>
             <CardDescription>
-              Instrumentnamen koennen fuer Dateinamen und Ergebnislisten in
+              Instrumentnamen können für Dateinamen und Ergebnislisten in
               verschiedenen Sprachen ausgegeben werden.
             </CardDescription>
           </CardHeader>
@@ -106,7 +106,7 @@ function RouteComponent() {
       </section>
 
       <section className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-        <Card className="h-full">
+        <Card className="h-full card-highlight">
           <CardHeader>
             <CardTitle>Workflow</CardTitle>
             <CardDescription>
@@ -117,14 +117,14 @@ function RouteComponent() {
             <div className="rounded-xl bg-muted/40 p-4 ring-1 ring-foreground/8">
               <div className="mb-2 text-sm font-medium">1. Projekt anlegen</div>
               <p className="text-sm text-muted-foreground">
-                Ein Musikstueck oder Satz wird als Projekt erstellt und dient
-                als Container fuer alle zugehoerigen PDFs.
+                Ein Musikstück oder Satz wird als Projekt erstellt und dient
+                als Container für alle zugehörigen PDFs.
               </p>
             </div>
             <div className="rounded-xl bg-muted/40 p-4 ring-1 ring-foreground/8">
               <div className="mb-2 text-sm font-medium">2. Dateien hochladen</div>
               <p className="text-sm text-muted-foreground">
-                Mehrere PDFs koennen gesammelt hochgeladen und anschliessend im
+                Mehrere PDFs können gesammelt hochgeladen und anschließend im
                 Projekt weiterbearbeitet werden.
               </p>
             </div>
@@ -145,7 +145,7 @@ function RouteComponent() {
           </CardContent>
         </Card>
 
-        <Card className="h-full">
+        <Card className="h-full card-highlight">
           <CardHeader>
             <CardTitle>Technik</CardTitle>
             <CardDescription>

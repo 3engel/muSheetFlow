@@ -67,19 +67,13 @@ function RouteComponent() {
             Exporteinstellungen
           </TabsTrigger>
         </TabsList>
-        <TabsContent
-          value="upload"
-          className="pt-4"
-        >
+        <TabsContent value="upload">
           <FileList
             project={project}
             files={files}
           />
         </TabsContent>
-        <TabsContent
-          value="rotate"
-          className="pt-4"
-        >
+        <TabsContent value="rotate">
           <RotationTool
             project={project}
             rotationValue={rotation}

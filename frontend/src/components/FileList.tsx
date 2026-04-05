@@ -73,7 +73,7 @@ export default function FileList({
         />
       </div>
       {files.length === 0 ? (
-        <p className="text-muted-foreground">
+        <p className="text-muted-foreground text-center">
           Keine Dateien vorhanden. Füge neue PDFs hinzu um diese weiter
           verarbeiten zu können.
         </p>

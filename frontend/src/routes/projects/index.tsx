@@ -76,7 +76,7 @@ function RouteComponent() {
 
   return (
     <div>
-      <Card className="w-full max-w-xl lg:w-xl shadow-lg mx-auto">
+      <Card className="w-full max-w-xl lg:w-xl shadow-lg mx-auto card-highlight">
         <CardHeader className="text-center pb-2">
           <div className="mx-auto bg-primary/50 w-12 h-12 flex items-center justify-center rounded-full mb-4 ring-4">
             <Plus className="h-6 w-6 text-primary" />
@@ -130,7 +130,7 @@ function RouteComponent() {
           {projects.map((p) => (
             <Card
               key={p.name}
-              className="hover:bg-muted transition-all cursor-pointer"
+              className="hover:bg-muted transition-all cursor-pointer card-highlight"
               onClick={() =>
                 navigate({
                   to: `/projects/$project`,
