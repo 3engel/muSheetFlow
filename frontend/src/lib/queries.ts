@@ -1,5 +1,5 @@
 import { api } from "@/lib/api";
-import { FileInfo, Job, JobResult, Mapping, Project } from "@/lib/types";
+import { FileInfo, Job, JobResult, Mapping, Project, ProjectSettings } from "@/lib/types";
 import { queryClient } from "@/main";
 import { mutationOptions, queryOptions } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -177,5 +177,25 @@ export const projectFilesDeleteMutationOptions = () => {
         description: error.message
       });
     }
+  });
+}
+
+export const projectSettingsQueryOptions = (projectName: string) =>
+  queryOptions({
+    queryKey: ["project-settings", projectName],
+    queryFn: async () => {
+      const res = await api.get<ProjectSettings>(`/projects/${projectName}/settings`);
+      return res.data;
+    },
+  })
+
+export const projectSettingsMutationOptions = () => {
+  return mutationOptions({
+    mutationFn: ({ projectName, settings }: { projectName: string; settings: ProjectSettings }) =>
+      api.put(`/projects/${projectName}/settings`, settings),
+    onMutate: async ({ projectName, settings }) => {
+      await queryClient.cancelQueries({ queryKey: ["project-settings", projectName] });
+      queryClient.setQueryData(["project-settings", projectName], settings);
+    },
   });
 }

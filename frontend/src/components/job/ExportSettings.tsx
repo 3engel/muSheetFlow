@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
@@ -9,18 +8,17 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/card";
+} from "../ui/card";
 import {
   Field,
   FieldContent,
   FieldDescription,
-  FieldError,
   FieldLabel,
   FieldTitle,
-} from "./ui/field";
-import { Checkbox } from "./ui/checkbox";
-import { Label } from "./ui/label";
-import { Slider } from "./ui/slider";
+} from "../ui/field";
+import { Checkbox } from "../ui/checkbox";
+import { Label } from "../ui/label";
+import { Slider } from "../ui/slider";
 import {
   Select,
   SelectContent,
@@ -28,28 +26,41 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
-import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
+} from "../ui/select";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { InfoIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 export default function ExportSettings({
   project,
   crop,
   rotation,
   doSplit,
+  autoDeskew,
+  autoEnhance,
+  jpegQuality,
+  targetLang,
+  onAutoDeskewChange,
+  onAutoEnhanceChange,
+  onJpegQualityChange,
+  onTargetLangChange,
   onExportStarted,
 }: {
   project: string;
   crop: Crop;
   rotation: number;
   doSplit: boolean;
+  autoDeskew: boolean;
+  autoEnhance: boolean;
+  jpegQuality: number;
+  targetLang: string;
+  onAutoDeskewChange: (v: boolean) => void;
+  onAutoEnhanceChange: (v: boolean) => void;
+  onJpegQualityChange: (v: number) => void;
+  onTargetLangChange: (v: string) => void;
   onExportStarted: () => void;
 }) {
-  const [autoDeskew, setAutoDeskew] = useState(true);
-  const [autoEnhance, setAutoEnhance] = useState(true);
-  const [jpegQuality, setJpegQuality] = useState(75);
-  const [targetLang, setTargetLang] = useState("Deutsch");
   const queryClient = useQueryClient();
   const { t } = useTranslation();
 
@@ -69,8 +80,11 @@ export default function ExportSettings({
       queryClient.invalidateQueries({ queryKey: ["jobs"] });
       onExportStarted();
     },
-    onError: () => {
-      alert(t("export.error"));
+    onError: (error) => {
+      toast.error(t("export.error"), {
+        description: error instanceof Error ? error.message : undefined,
+        duration: 5000,
+      });
     },
   });
 
@@ -91,14 +105,12 @@ export default function ExportSettings({
                 id="auto-deskew"
                 name="auto-deskew"
                 checked={autoDeskew}
-                onCheckedChange={setAutoDeskew}
+                onCheckedChange={(v) => onAutoDeskewChange(!!v)}
               />
 
               <FieldContent>
                 <FieldTitle>{t("export.deskew")}</FieldTitle>
-                <FieldDescription>
-                  {t("export.deskewDesc")}
-                </FieldDescription>
+                <FieldDescription>{t("export.deskewDesc")}</FieldDescription>
               </FieldContent>
             </Field>
             <Field orientation="horizontal">
@@ -106,14 +118,12 @@ export default function ExportSettings({
                 id="auto-enhance"
                 name="auto-enhance"
                 checked={autoEnhance}
-                onCheckedChange={setAutoEnhance}
+                onCheckedChange={(v) => onAutoEnhanceChange(!!v)}
               />
 
               <FieldContent>
                 <FieldTitle>{t("export.contrast")}</FieldTitle>
-                <FieldDescription>
-                  {t("export.contrastDesc")}
-                </FieldDescription>
+                <FieldDescription>{t("export.contrastDesc")}</FieldDescription>
               </FieldContent>
             </Field>
             <div className="flex w-full flex-col gap-4">
@@ -126,7 +136,7 @@ export default function ExportSettings({
               <Slider
                 id="quality"
                 value={jpegQuality}
-                onValueChange={(value) => setJpegQuality(value as number)}
+                onValueChange={(value) => onJpegQualityChange(value as number)}
                 min={30}
                 max={100}
               />
@@ -136,7 +146,7 @@ export default function ExportSettings({
               <FieldLabel>{t("export.ocrLanguage")}</FieldLabel>
               <Select
                 onValueChange={(value) => {
-                  if (value) setTargetLang(value);
+                  if (value) onTargetLangChange(value);
                 }}
                 value={targetLang}
               >
@@ -145,8 +155,12 @@ export default function ExportSettings({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="Deutsch">{t("export.german")}</SelectItem>
-                    <SelectItem value="English">{t("export.english")}</SelectItem>
+                    <SelectItem value="Deutsch">
+                      {t("export.german")}
+                    </SelectItem>
+                    <SelectItem value="English">
+                      {t("export.english")}
+                    </SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -155,9 +169,7 @@ export default function ExportSettings({
           <Alert>
             <InfoIcon />
             <AlertTitle>{t("export.bgNote")}</AlertTitle>
-            <AlertDescription>
-              {t("export.bgNoteDesc")}
-            </AlertDescription>
+            <AlertDescription>{t("export.bgNoteDesc")}</AlertDescription>
           </Alert>
         </CardContent>
         <CardFooter>

@@ -35,3 +35,17 @@ export type FileInfo = {
   size: number
   created_at: string
 }
+
+export type ProjectSettings = {
+  rotation: number
+  do_split: boolean
+  crop_x: number
+  crop_y: number
+  crop_w: number
+  crop_h: number
+  auto_deskew: boolean
+  auto_enhance: boolean
+  jpeg_quality: number
+  target_language: string
+  tab: string
+}

@@ -1,7 +1,7 @@
 import { CheckSquare, CircleX } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { useState } from "react";
-import { Checkbox } from "./ui/checkbox";
+import { Checkbox } from "../ui/checkbox";
 import { useMutation } from "@tanstack/react-query";
 import { projectFilesDeleteMutationOptions } from "@/lib/queries";
 import { queryClient } from "@/main";
@@ -13,7 +13,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./ui/table";
+} from "../ui/table";
 import { FileInfo } from "@/lib/types";
 import { formatFileSize } from "@/lib/utils";
 import FileUpload from "./FileUpload";

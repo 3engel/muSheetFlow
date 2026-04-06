@@ -61,6 +61,47 @@ class ProjectCreate(BaseModel):
     name: str
 
 
+class ProjectSettings(BaseModel):
+    rotation: int = 0
+    do_split: bool = False
+    crop_x: float = 5
+    crop_y: float = 5
+    crop_w: float = 90
+    crop_h: float = 90
+    auto_deskew: bool = True
+    auto_enhance: bool = True
+    jpeg_quality: int = 75
+    target_language: str = "Deutsch"
+    tab: str = "upload"
+
+
+def _settings_path(project_name: str) -> str:
+    return os.path.join(UPLOAD_DIR, project_name, "settings.json")
+
+
+@app.get("/projects/{project_name}/settings")
+async def get_project_settings(project_name: str):
+    project_path = os.path.join(UPLOAD_DIR, project_name)
+    if not os.path.exists(project_path):
+        return Response(status_code=404)
+    path = _settings_path(project_name)
+    if os.path.exists(path):
+        with open(path, "r") as f:
+            return json.load(f)
+    return ProjectSettings().model_dump()
+
+
+@app.put("/projects/{project_name}/settings")
+async def update_project_settings(project_name: str, settings: ProjectSettings):
+    project_path = os.path.join(UPLOAD_DIR, project_name)
+    if not os.path.exists(project_path):
+        return Response(status_code=404)
+    path = _settings_path(project_name)
+    with open(path, "w") as f:
+        json.dump(settings.model_dump(), f, indent=2)
+    return settings.model_dump()
+
+
 @app.post("/projects/")
 async def create_project(project: ProjectCreate):
     project_path = os.path.join(UPLOAD_DIR, project.name)

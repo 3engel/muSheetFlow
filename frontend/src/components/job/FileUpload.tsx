@@ -21,7 +21,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "./ui/sheet";
+} from "../ui/sheet";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
