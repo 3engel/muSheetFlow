@@ -47,16 +47,6 @@ _load_jobs()
 app = FastAPI(title="muSheetFlow API")
 app.mount("/exports", StaticFiles(directory=OUTPUT_DIR), name="exports")
 
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-
 class ProjectCreate(BaseModel):
     name: str
 
