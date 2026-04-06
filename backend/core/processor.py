@@ -428,6 +428,8 @@ def process_pdf_document_pct(
     pdf_document = fitz.open(pdf_path)
     output_pdf = fitz.open()
 
+    first_page_cropped = None
+
     for page_num in range(pdf_document.page_count):
         page = pdf_document.load_page(page_num)
         img_pil = pdf_page_to_image(page, dpi=300)
@@ -436,6 +438,19 @@ def process_pdf_document_pct(
         parts = split_image_vertically(img_pil) if do_split else [img_pil]
 
         for idx, part in enumerate(parts):
+            # Capture cropped first page for instrument OCR (before enhance)
+            if page_num == 0 and idx == 0:
+                w, h = part.size
+                left = int((crop_x / 100.0) * w)
+                top = int((crop_y / 100.0) * h)
+                right = int(((crop_x + crop_w) / 100.0) * w)
+                bottom = int(((crop_y + crop_h) / 100.0) * h)
+                left = max(0, min(left, w - 1))
+                right = max(left + 1, min(right, w))
+                top = max(0, min(top, h - 1))
+                bottom = max(top + 1, min(bottom, h))
+                first_page_cropped = part.crop((left, top, right, bottom))
+
             final_img = apply_percentage_crop_and_center(
                 part,
                 crop_x,
@@ -479,4 +494,4 @@ def process_pdf_document_pct(
     out_bytes = output_pdf.tobytes()
     pdf_document.close()
     output_pdf.close()
-    return out_bytes
+    return out_bytes, first_page_cropped

@@ -98,7 +98,7 @@ export const jobFinalizeMutationOptions = () => {
 
 export const jobDeleteMutationOptions = () => {
   return mutationOptions({
-    mutationFn: (id: string) => api.delete(`/jobs/${id}`),
+    mutationFn: (job: Job) => api.delete(`/jobs/${job.id}`),
     onError: (error) => {
       console.error(error);
       toast.error(`Fehler beim Löschen des Jobs.`, {

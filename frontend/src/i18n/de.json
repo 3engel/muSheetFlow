@@ -123,10 +123,10 @@
     "deleteJob": "Job löschen",
     "noJobs": "Keine Jobs vorhanden.",
     "deleteTitle": "Job {{name}} löschen",
-    "deleteConfirm": "Soll der Job <strong>{{name}}</strong> gelöscht werden.",
+    "deleteConfirm": "Soll der Job <strong>{{name}}</strong> (Id: {{id}}) gelöscht werden.",
     "cancel": "Abbrechen",
     "deleteForever": "Unwiderruflich löschen",
-    "deleted": "Job {{name}} erfolgreich gelöscht"
+    "deleted": "Job {{name}} (Id: {{id}}) erfolgreich gelöscht"
   },
   "jobDetail": {
     "assignInstruments": "Instrumente zuweisen",

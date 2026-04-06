@@ -35,7 +35,7 @@
   "projects": {
     "newProject": "New Score Project",
     "newProjectDesc": "Create a new project (e.g. the name of the musical piece) to upload scores and have them processed automatically in a batch.",
-    "placeholder": "e.g. Bohemian Tequila, Bohemian Dream, etc.",
+    "placeholder": "e.g. Aida, Stars and Stripes, etc.",
     "creating": "Creating...",
     "startProject": "Start project",
     "continueProject": "Or continue project",
@@ -123,10 +123,10 @@
     "deleteJob": "Delete job",
     "noJobs": "No jobs available.",
     "deleteTitle": "Delete job {{name}}",
-    "deleteConfirm": "Should the job <strong>{{name}}</strong> be deleted?",
+    "deleteConfirm": "Should the job <strong>{{name}}</strong> (Id: {{id}}) be deleted?",
     "cancel": "Cancel",
     "deleteForever": "Delete permanently",
-    "deleted": "Job {{name}} deleted successfully"
+    "deleted": "Job {{name}} (Id: {{id}}) deleted successfully"
   },
   "jobDetail": {
     "assignInstruments": "Assign instruments",

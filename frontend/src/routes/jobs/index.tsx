@@ -66,7 +66,12 @@ function JobsPage() {
         queryKey: ["jobs"],
         refetchType: "all",
       });
-      toast.success(t("jobs.deleted", { name: job }));
+      queryClient.invalidateQueries({
+        queryKey: ["jobs", job.id],
+        exact: false,
+        refetchType: "all",
+      });
+      toast.success(t("jobs.deleted", { name: job.project, id: job.id }));
       setJobToDelete(null);
     },
   });
@@ -216,7 +221,7 @@ function JobsPage() {
               {t("jobs.deleteTitle", { name: jobToDelete?.project })}
             </DialogTitle>
             <DialogDescription>
-              {t("jobs.deleteConfirm", { name: jobToDelete?.project })}
+              {t("jobs.deleteConfirm", { name: jobToDelete?.project, id: jobToDelete?.id })}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="mt-4">
@@ -229,7 +234,7 @@ function JobsPage() {
             <Button
               variant="destructive"
               disabled={deleteMutation.isPending}
-              onClick={() => deleteMutation.mutate(jobToDelete!.id)}
+              onClick={() => deleteMutation.mutate(jobToDelete!)}
             >
               {t("jobs.deleteForever")}
             </Button>
