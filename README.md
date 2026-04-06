@@ -80,37 +80,6 @@ muSheetFlow/
     └── exports/                # Processed job results
 ```
 
-## API Overview
-
-### Projects
-
-| Method   | Endpoint                              | Description                   |
-| -------- | ------------------------------------- | ----------------------------- |
-| `POST`   | `/projects/`                          | Create a project              |
-| `POST`   | `/projects/{name}/upload`             | Upload PDF files              |
-| `GET`    | `/projects/{name}/files`              | List project files            |
-| `DELETE` | `/projects/{name}/files`              | Delete files                  |
-| `GET`    | `/projects/{name}/overlay`            | Generate document overlay     |
-| `GET`    | `/projects/{name}/batch_preview`      | Preview processing results    |
-
-### Jobs
-
-| Method   | Endpoint                  | Description                        |
-| -------- | ------------------------- | ---------------------------------- |
-| `POST`   | `/jobs/start`             | Start a background export job      |
-| `GET`    | `/jobs`                   | List all jobs                      |
-| `GET`    | `/jobs/{id}`              | Get job details and progress       |
-| `GET`    | `/jobs/{id}/results`      | Get results with instrument names  |
-| `POST`   | `/jobs/{id}/finalize`     | Finalize and save assigned PDFs    |
-| `DELETE` | `/jobs/{id}`              | Delete a job                       |
-
-### Mapping
-
-| Method | Endpoint   | Description                  |
-| ------ | ---------- | ---------------------------- |
-| `GET`  | `/mapping` | Get instrument name mappings |
-| `POST` | `/mapping` | Update instrument mappings   |
-
 ## Processing Pipeline
 
 1. **PDF → Image** — Convert pages at 300 DPI
