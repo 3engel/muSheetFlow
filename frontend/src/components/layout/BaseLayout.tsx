@@ -1,4 +1,4 @@
-import { AppSidebar } from "../AppSidebar";
+import { AppSidebar } from "./AppSidebar";
 import { SidebarProvider, SidebarInset } from "../ui/sidebar";
 import { Toaster } from "../ui/sonner";
 import { Header } from "./Header";

@@ -1,11 +1,7 @@
 import * as React from "react";
-import { Link, Route, useRouter } from "@tanstack/react-router";
+import { Link, Route, useRouter, useLocation } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import {
-  FileMusic,
-  Info,
-} from "lucide-react";
-
+import { FileMusic, Info } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -16,12 +12,14 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar";
-import { AppTitle } from "./layout/AppTitle";
-import { RouteTreeMenu } from "./layout/RouteTreeMenu";
-import { LinkButton } from "./ui/link-button";
-import { Button } from "./ui/button";
-import { LanguageSwitcher } from "./LanguageSwitcher";
+import { AppTitle } from "./AppTitle";
+
+import { LinkButton } from "../ui/link-button";
+import { Button } from "../ui/button";
+import { LanguageSwitcher } from "../LanguageSwitcher";
+import { RouteTreeMenu } from "./RouteTreeMenu";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { routeTree } = useRouter();
@@ -36,6 +34,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         b.options.staticData?.sortIndex ?? Number.POSITIVE_INFINITY;
       return aIndex - bIndex;
     });
+
+  const { isMobile, setOpenMobile } = useSidebar();
+  const location = useLocation();
+
+  React.useEffect(() => {
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+  }, [location.pathname, isMobile, setOpenMobile]);
 
   return (
     <Sidebar {...props}>
@@ -95,7 +102,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         >
           <svg
             role="img"
-            
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >

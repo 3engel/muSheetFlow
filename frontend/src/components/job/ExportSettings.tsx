@@ -128,13 +128,14 @@ export default function ExportSettings({
             </Field>
             <div className="flex w-full flex-col gap-4">
               <div className="flex items-center justify-between">
-                <Label htmlFor="quality">{t("export.quality")}</Label>
+                <span className="text-sm font-medium1">
+                  {t("export.quality")}
+                </span>
                 <span className="text-sm text-muted-foreground font-semibold">
                   {jpegQuality}%
                 </span>
               </div>
               <Slider
-                id="quality"
                 value={jpegQuality}
                 onValueChange={(value) => onJpegQualityChange(value as number)}
                 min={30}
@@ -143,8 +144,11 @@ export default function ExportSettings({
             </div>
 
             <Field>
-              <FieldLabel>{t("export.ocrLanguage")}</FieldLabel>
+              <FieldLabel htmlFor="ocr-language">
+                {t("export.ocrLanguage")}
+              </FieldLabel>
               <Select
+                id="ocr-language"
                 onValueChange={(value) => {
                   if (value) onTargetLangChange(value);
                 }}

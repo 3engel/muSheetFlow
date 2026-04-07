@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import ReactCrop, { type Crop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import { Card, CardDescription, CardHeader } from "./ui/card";
+import { Card, CardDescription, CardHeader } from "../ui/card";
 import { Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { API_BASE_URL } from "@/lib/api";

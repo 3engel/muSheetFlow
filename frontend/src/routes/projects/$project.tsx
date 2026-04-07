@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useCallback, useRef } from "react";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import FileList from "@/components/job/FileList";
-import CropTool from "@/components/CropTool";
+import CropTool from "@/components/job/CropTool";
 import RotationTool from "@/components/job/RotationTool";
 import ExportSettings from "@/components/job/ExportSettings";
 import type { Crop } from "react-image-crop";

@@ -82,13 +82,19 @@ def load_mapping():
     if os.path.exists(MAPPING_FILE):
         try:
             with open(MAPPING_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
+                mapping = json.load(f)
+                mapping.sort(key=lambda x: x.get("Term", "").lower())
+                return mapping
         except Exception:
-            return DEFAULT_MAPPING.copy()
-    return DEFAULT_MAPPING.copy()
+            pass
+    
+    mapping = DEFAULT_MAPPING.copy()
+    mapping.sort(key=lambda x: x.get("Term", "").lower())
+    return mapping
 
 
 def save_mapping(mapping):
+    mapping.sort(key=lambda x: x.get("Term", "").lower())
     with open(MAPPING_FILE, "w", encoding="utf-8") as f:
         json.dump(mapping, f, indent=4, ensure_ascii=False)
 

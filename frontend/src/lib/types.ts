@@ -4,7 +4,7 @@ export type Job = {
   status: string
   progress: number
   total: number
-  target_language: string
+  target_language: "Deutsch" | "English"
   error?: string
   result_file?: string
 }

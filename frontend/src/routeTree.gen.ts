@@ -17,7 +17,7 @@ import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
 import { Route as JobsIndexRouteImport } from './routes/jobs/index'
 import { Route as ProjectsProjectRouteImport } from './routes/projects/$project'
 import { Route as JobsJobidRouteImport } from './routes/jobs/$jobid'
-import { Route as footNavAboutRouteImport } from './routes/(footNav)/about'
+import { Route as footerAboutRouteImport } from './routes/(footer)/about'
 
 const MappingRoute = MappingRouteImport.update({
   id: '/mapping',
@@ -59,8 +59,8 @@ const JobsJobidRoute = JobsJobidRouteImport.update({
   path: '/$jobid',
   getParentRoute: () => JobsRouteRoute,
 } as any)
-const footNavAboutRoute = footNavAboutRouteImport.update({
-  id: '/(footNav)/about',
+const footerAboutRoute = footerAboutRouteImport.update({
+  id: '/(footer)/about',
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
@@ -70,7 +70,7 @@ export interface FileRoutesByFullPath {
   '/jobs': typeof JobsRouteRouteWithChildren
   '/projects': typeof ProjectsRouteRouteWithChildren
   '/mapping': typeof MappingRoute
-  '/about': typeof footNavAboutRoute
+  '/about': typeof footerAboutRoute
   '/jobs/$jobid': typeof JobsJobidRoute
   '/projects/$project': typeof ProjectsProjectRoute
   '/jobs/': typeof JobsIndexRoute
@@ -79,7 +79,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/mapping': typeof MappingRoute
-  '/about': typeof footNavAboutRoute
+  '/about': typeof footerAboutRoute
   '/jobs/$jobid': typeof JobsJobidRoute
   '/projects/$project': typeof ProjectsProjectRoute
   '/jobs': typeof JobsIndexRoute
@@ -91,7 +91,7 @@ export interface FileRoutesById {
   '/jobs': typeof JobsRouteRouteWithChildren
   '/projects': typeof ProjectsRouteRouteWithChildren
   '/mapping': typeof MappingRoute
-  '/(footNav)/about': typeof footNavAboutRoute
+  '/(footer)/about': typeof footerAboutRoute
   '/jobs/$jobid': typeof JobsJobidRoute
   '/projects/$project': typeof ProjectsProjectRoute
   '/jobs/': typeof JobsIndexRoute
@@ -124,7 +124,7 @@ export interface FileRouteTypes {
     | '/jobs'
     | '/projects'
     | '/mapping'
-    | '/(footNav)/about'
+    | '/(footer)/about'
     | '/jobs/$jobid'
     | '/projects/$project'
     | '/jobs/'
@@ -136,7 +136,7 @@ export interface RootRouteChildren {
   JobsRouteRoute: typeof JobsRouteRouteWithChildren
   ProjectsRouteRoute: typeof ProjectsRouteRouteWithChildren
   MappingRoute: typeof MappingRoute
-  footNavAboutRoute: typeof footNavAboutRoute
+  footerAboutRoute: typeof footerAboutRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -197,11 +197,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JobsJobidRouteImport
       parentRoute: typeof JobsRouteRoute
     }
-    '/(footNav)/about': {
-      id: '/(footNav)/about'
+    '/(footer)/about': {
+      id: '/(footer)/about'
       path: '/about'
       fullPath: '/about'
-      preLoaderRoute: typeof footNavAboutRouteImport
+      preLoaderRoute: typeof footerAboutRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -240,7 +240,7 @@ const rootRouteChildren: RootRouteChildren = {
   JobsRouteRoute: JobsRouteRouteWithChildren,
   ProjectsRouteRoute: ProjectsRouteRouteWithChildren,
   MappingRoute: MappingRoute,
-  footNavAboutRoute: footNavAboutRoute,
+  footerAboutRoute: footerAboutRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -52,6 +52,15 @@ import { toast } from "sonner";
 import { KEYS, VOICES } from "@/lib/constants";
 import { useTranslation } from "react-i18next";
 import { API_BASE_URL } from "@/lib/api";
+import { Slider } from "@/components/ui/slider";
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
+import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/jobs/$jobid")({
   component: RouteComponent,
@@ -85,13 +94,16 @@ function RouteComponent() {
     mappingsQueryOptions(),
   );
 
+  const [topPlacement, setTopPlacement] = useState<number>(0);
+  const [leftPlacement, setLeftPlacement] = useState<number>(0);
+
   const [results, setResults] = useState(jobResults);
   const mutateJobLanguage = useMutation(jobLanguageMutationOptions());
   const mutateJobResults = useMutation(jobResultsMutationOptions());
 
   const mutateJobFinalize = useMutation({
     ...jobFinalizeMutationOptions(),
-    onSuccess: (_, { jobId }) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["jobs"],
         refetchType: "all",
@@ -102,7 +114,10 @@ function RouteComponent() {
 
   const instrumentsList = Array.from(
     new Set(
-      mappings.map((m) => m.Deutsch || m.English).filter(Boolean) as string[],
+      mappings
+        .map((m) => m[jobDetails.target_language])
+        .filter(Boolean)
+        .sort() as string[],
     ),
   );
 
@@ -155,27 +170,89 @@ function RouteComponent() {
   return (
     <div className="flex flex-col gap-2 h-[calc(100vh-96px)]">
       <LoadingActivity showLoader={showLoader} />
-      <div className="flex flex-col gap-2">
-        <h1 className="text-2xl font-bold">{t("jobDetail.assignInstruments")}</h1>
-        <div className="flex items-center gap-2 mt-1">
-          <span className="">
-            {t("jobDetail.outputLanguage")}
-          </span>
-          <Select
-            value={jobDetails.target_language}
-            onValueChange={(value) => value && changeLanguage(value)}
-          >
-            <SelectTrigger className="">
-              <SelectValue placeholder={t("jobDetail.selectLanguage")} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>{t("jobDetail.languages")}</SelectLabel>
-                <SelectItem value="Deutsch">{t("jobDetail.german")}</SelectItem>
-                <SelectItem value="English">{t("jobDetail.english")}</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+      <div className="flex flex-col gap-4">
+        <h1 className="text-2xl font-bold">
+          {t("jobDetail.assignInstruments")}
+        </h1>
+        <div className="flex flex-col md:flex-row gap-4">
+          <FieldGroup className="w-full md:w-1/2">
+            <Field orientation="horizontal">
+              <FieldContent>
+                <FieldLabel htmlFor="output-language">
+                  {t("jobDetail.outputLanguage")}
+                </FieldLabel>
+                <FieldDescription>
+                  {t("jobDetail.outputLanguageDesc")}
+                </FieldDescription>
+              </FieldContent>
+              <Select
+                id="output-language"
+                value={jobDetails.target_language}
+                onValueChange={(value) => value && changeLanguage(value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={t("jobDetail.selectLanguage")} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>{t("jobDetail.languages")}</SelectLabel>
+                    <SelectItem value="Deutsch">
+                      {t("jobDetail.german")}
+                    </SelectItem>
+                    <SelectItem value="English">
+                      {t("jobDetail.english")}
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </Field>
+          </FieldGroup>
+          <div className="flex flex-col gap-4 w-full md:w-1/2">
+            <div>
+              <h2 className="font-medium text-sm">
+                {t("jobDetail.previewSettings")}
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                {t("jobDetail.previewSettingsDesc")}
+              </p>
+            </div>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid w-full gap-3">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-medium text-sm">
+                    {t("jobDetail.topPlacement")}
+                  </span>
+                  <span className="text-sm text-muted-foreground">
+                    {topPlacement}px
+                  </span>
+                </div>
+                <Slider
+                  value={topPlacement}
+                  onValueChange={(value) => setTopPlacement(value as number)}
+                  step={1}
+                  min={0}
+                  max={300}
+                />
+              </div>
+              <div className="grid w-full gap-3">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-medium text-sm">
+                    {t("jobDetail.leftPlacement")}
+                  </span>
+                  <span className="text-sm text-muted-foreground">
+                    {leftPlacement}px
+                  </span>
+                </div>
+                <Slider
+                  value={leftPlacement}
+                  onValueChange={(value) => setLeftPlacement(value as number)}
+                  step={1}
+                  min={0}
+                  max={300}
+                />
+              </div>
+            </div>
+          </div>
         </div>
         <div className="flex gap-2 justify-end">
           <Button
@@ -235,13 +312,15 @@ function RouteComponent() {
                   onClick={() => setSelectedResult(r)}
                   style={{
                     width: "800px",
-                    top: "0",
-                    left: "0",
+                    top: `-${topPlacement}px`,
+                    left: `-${leftPlacement}px`,
                   }}
                 />
               </div>
               <CardHeader>
-                <CardDescription>{t("jobDetail.exportFilename")}</CardDescription>
+                <CardDescription>
+                  {t("jobDetail.exportFilename")}
+                </CardDescription>
                 <CardTitle
                   className="text-xs truncate"
                   title={getPreviewFileName(r)}
@@ -266,8 +345,10 @@ function RouteComponent() {
                       placeholder={t("jobDetail.selectInstrument")}
                       className="w-full"
                     />
-                    <ComboboxContent>
-                      <ComboboxEmpty>{t("jobDetail.noInstrument")}</ComboboxEmpty>
+                    <ComboboxContent className="min-w-50">
+                      <ComboboxEmpty>
+                        {t("jobDetail.noInstrument")}
+                      </ComboboxEmpty>
                       <ComboboxList>
                         {(item) => (
                           <ComboboxItem

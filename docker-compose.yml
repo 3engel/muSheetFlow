@@ -4,10 +4,12 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    command: uvicorn api:app --reload --host 0.0.0.0 --port 8000
     container_name: muSheetFlow_backend
     ports:
       - "8000:8000"
     volumes:
+      - ./backend:/app
       - ./data:/app/data
     environment:
       - DATA_DIR=/app/data
@@ -17,9 +19,16 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      target: builder  # Use the Node.js stage, not Nginx
+    command: npm run dev -- --host 0.0.0.0 --port 3000
     container_name: muSheetFlow_frontend
     ports:
-      - "3000:80"
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules # Prevents local node_modules from overriding container node_modules
     depends_on:
       - backend
+    environment:
+      - VITE_PROXY_TARGET=http://backend:8000 # Let Vite proxy requests to the backend
     restart: unless-stopped

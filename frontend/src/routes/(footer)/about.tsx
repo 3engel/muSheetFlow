@@ -17,7 +17,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-export const Route = createFileRoute("/(footNav)/about")({
+export const Route = createFileRoute("/(footer)/about")({
   component: RouteComponent,
   staticData: { title: "nav.about" },
 });

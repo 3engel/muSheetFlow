@@ -130,7 +130,8 @@
   },
   "jobDetail": {
     "assignInstruments": "Instrumente zuweisen",
-    "outputLanguage": "Ausgabesprache der Instrumente für Dateinamen",
+    "outputLanguage": "Ausgabesprache",
+    "outputLanguageDesc": "In dieser Sprache werden die Instrumente für Dateinamen ausgegeben.",
     "selectLanguage": "Sprache für Instrumente auswählen",
     "languages": "Sprachen",
     "german": "Deutsch",
@@ -147,14 +148,18 @@
     "key": "Tonart",
     "none": "Keine",
     "previewOcr": "Vorschau / OCR Ergebnis",
-    "finalized": "Job erfolgreich fertiggestellt!"
+    "finalized": "Job erfolgreich fertiggestellt!",
+    "topPlacement": "Verschiebung von oben",
+    "leftPlacement": "Verschiebung von links",
+    "previewSettings": "Vorschau-Bildeinstellungen",
+    "previewSettingsDesc": "Einstellungen für die Vorschau-Bilder zur besseren Instrumentenzuordnung."
   },
   "mapping": {
     "title": "Instrumente",
     "description": "Hier können Sie die Zuordnung von OCR-erkannten Suchbegriffen zu den entsprechenden Instrumentennamen bearbeiten.",
     "newMapping": "Neues Mapping",
     "save": "Speichern",
-    "term": "Suchbegriff (Regex/Wort)",
+    "term": "Suchbegriffe (Komma getrennt)",
     "german": "Deutsch",
     "english": "English",
     "termPlaceholder": "z.B. flöte",

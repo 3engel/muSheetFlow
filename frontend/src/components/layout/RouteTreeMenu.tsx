@@ -11,6 +11,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { useState } from "react";
 
@@ -90,6 +91,9 @@ function RouteTreeMenuItem({
   const navigate = useNavigate();
   const { t } = useTranslation();
   const isActive = normalizedFullPath === pathname;
+
+  const { isMobile, toggleSidebar } = useSidebar();
+
   return (
     <SidebarMenuButton
       isActive={isActive}

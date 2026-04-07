@@ -6,7 +6,7 @@ RUN npm ci
 
 COPY . .
 # We need to build the Vite app. Next.js telemetry is not needed, but harmless.
-RUN npm run build -- --mode production
+RUN npm run build
 
 FROM nginx:alpine AS runner
 # Copy custom Nginx configuration if you have one, or just overrite default

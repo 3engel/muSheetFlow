@@ -106,7 +106,9 @@ function RouteComponent() {
             onClick={() => newProjectMutation.mutate(newProjectName)}
             size="lg"
             className="w-full text-base"
-            disabled={newProjectMutation.isPending || newProjectName.trim() === ""}
+            disabled={
+              newProjectMutation.isPending || newProjectName.trim() === ""
+            }
           >
             {newProjectMutation.isPending ? (
               <>

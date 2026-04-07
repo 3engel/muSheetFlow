@@ -130,7 +130,8 @@
   },
   "jobDetail": {
     "assignInstruments": "Assign instruments",
-    "outputLanguage": "Output language of instruments for filenames",
+    "outputLanguage": "Output language",
+    "outputLanguageDesc": "In this language, the instruments will be output for filenames.",
     "selectLanguage": "Select language for instruments",
     "languages": "Languages",
     "german": "German",
@@ -147,14 +148,18 @@
     "key": "Key",
     "none": "None",
     "previewOcr": "Preview / OCR Result",
-    "finalized": "Job finalized successfully!"
+    "finalized": "Job finalized successfully!",
+    "topPlacement": "Top offset",
+    "leftPlacement": "Left offset",
+    "previewSettings": "Preview image settings",
+    "previewSettingsDesc": "Settings for the preview images to better assign instruments."
   },
   "mapping": {
     "title": "Instruments",
     "description": "Here you can edit the mapping of OCR-recognized search terms to the corresponding instrument names.",
     "newMapping": "New mapping",
     "save": "Save",
-    "term": "Search term (Regex/Word)",
+    "term": "Search terms (comma separated)",
     "german": "German",
     "english": "English",
     "termPlaceholder": "e.g. flöte",
