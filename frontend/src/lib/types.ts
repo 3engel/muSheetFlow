@@ -45,6 +45,7 @@ export type ProjectSettings = {
   crop_h: number
   auto_deskew: boolean
   auto_enhance: boolean
+  remove_white_pages: boolean
   jpeg_quality: number
   target_language: string
   tab: string

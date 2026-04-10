@@ -7,9 +7,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 import { createFileRoute } from "@tanstack/react-router";
-import { Download, Loader2, Package, Save } from "lucide-react";
+import {
+  AlertTriangle,
+  Car,
+  Download,
+  Loader2,
+  Package,
+  Save,
+} from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import {
   jobDetailsQueryOptions,
@@ -34,6 +42,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -61,6 +70,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/jobs/$jobid")({
   component: RouteComponent,
@@ -158,6 +168,15 @@ function RouteComponent() {
     },
     [jobDetails.project],
   );
+
+  const duplicateNames = useMemo(() => {
+    const names = results.map(getPreviewFileName);
+    const nameCounts: Record<string, number> = {};
+    names.forEach((n) => {
+      nameCounts[n] = (nameCounts[n] || 0) + 1;
+    });
+    return Object.keys(nameCounts).filter((n) => nameCounts[n] > 1);
+  }, [results, getPreviewFileName]);
 
   useEffect(() => {
     setIsPreviewOpen(selectedResult !== null);
@@ -271,7 +290,7 @@ function RouteComponent() {
           <Button
             size="lg"
             onClick={() => mutateJobFinalize.mutate({ jobId: jobid, results })}
-            disabled={mutateJobFinalize.isPending}
+            disabled={mutateJobFinalize.isPending || duplicateNames.length > 0}
           >
             {mutateJobFinalize.isPending ? (
               <Loader2 className="animate-spin" />
@@ -297,12 +316,26 @@ function RouteComponent() {
             </Button>
           )}
         </div>
+
+        {duplicateNames.length > 0 && (
+          <Alert variant="destructive">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertTitle>{t("jobDetail.duplicateNamesTitle")}</AlertTitle>
+            <AlertDescription>
+              {t("jobDetail.duplicateNamesDesc")}
+            </AlertDescription>
+          </Alert>
+        )}
       </div>
       <ScrollArea className="flex-1 grow min-h-90 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-4">
           {results.map((r, idx) => (
             <Card
-              className="pt-0"
+              className={cn(
+                "pt-0",
+                duplicateNames.includes(getPreviewFileName(r)) &&
+                  "border-destructive border-2",
+              )}
               key={idx}
             >
               <div className="w-full h-40 overflow-hidden border cursor-zoom-in hover:opacity-80 relative">
@@ -434,6 +467,22 @@ function RouteComponent() {
                   />
                 </div>
               </CardContent>
+              <CardFooter>
+                <Button
+                  variant="outline"
+                  nativeButton={false}
+                  className="w-full"
+                  render={
+                    <a
+                      href={`${API_BASE_URL}/exports/${jobid}/${r.temp_file}`}
+                      download={getPreviewFileName(r)}
+                    />
+                  }
+                >
+                  <Download />
+                  {t("jobDetail.downloadSingleVoice")}
+                </Button>
+              </CardFooter>
             </Card>
           ))}
         </div>

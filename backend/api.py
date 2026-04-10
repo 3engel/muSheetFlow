@@ -60,6 +60,7 @@ class ProjectSettings(BaseModel):
     crop_h: float = 90
     auto_deskew: bool = True
     auto_enhance: bool = True
+    remove_white_pages: bool = False
     jpeg_quality: int = 75
     target_language: str = "Deutsch"
     tab: str = "upload"

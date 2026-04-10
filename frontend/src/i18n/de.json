@@ -102,6 +102,8 @@
     "deskewDesc": "Begradigt automatisch schief eingescannten Noten. Funktioniert am besten, wenn die Schieflage nicht zu extrem ist.",
     "contrast": "Auto-Kontrast",
     "contrastDesc": "Verbessert automatisch den Kontrast der eingescannten Noten. Funktioniert am besten, wenn die Noten leicht verblasst oder ungleichmäßig beleuchtet sind.",
+    "removeWhitePages": "Leere Seiten überspringen",
+    "removeWhitePagesDesc": "Verwirft Seiten, die (fast) keine schwarzen Pixel (Noten) enthalten.",
     "quality": "Ausgabequalität",
     "ocrLanguage": "OCR Sprache für Texterkennung",
     "selectLanguage": "OCR Sprache wählen",
@@ -152,7 +154,10 @@
     "topPlacement": "Verschiebung von oben",
     "leftPlacement": "Verschiebung von links",
     "previewSettings": "Vorschau-Bildeinstellungen",
-    "previewSettingsDesc": "Einstellungen für die Vorschau-Bilder zur besseren Instrumentenzuordnung."
+    "previewSettingsDesc": "Einstellungen für die Vorschau-Bilder zur besseren Instrumentenzuordnung.",
+    "downloadSingleVoice": "Einzelne Stimme herunterladen",
+    "duplicateNamesTitle": "Warnung: Doppelte Dateinamen",
+    "duplicateNamesDesc": "Einige Dateien erzeugen denselben Export-Dateinamen. Ändern Sie Instrument, Stimme oder Tonart, um diese einzigartig zu machen."
   },
   "mapping": {
     "title": "Instrumente",

@@ -238,6 +238,17 @@ def enhance_contrast_v3(image_pil):
     result = lut[img]
     return Image.fromarray(result)
 
+def is_blank_page(image_pil, threshold=220, min_ink_pct=0.005):
+    """
+    Checks if a page is considered blank based on the percentage of dark pixels.
+    """
+    img_cv = np.array(image_pil.convert("L"))
+    # Count pixels darker than the threshold
+    ink_pixels = np.sum(img_cv < threshold)
+    total_pixels = img_cv.size
+    ink_pct = ink_pixels / total_pixels
+    return ink_pct < min_ink_pct
+
 def auto_deskew_cropped(image_pil):
     """Auto-deskew after cropping based on horizontal stave lines."""
     img_cv = np.array(image_pil.convert("L"))
@@ -421,6 +432,7 @@ def process_pdf_document_pct(
     crop_h=100.0,
     auto_deskew_after=True,
     auto_contrast=True,
+    remove_white_pages=False,
     create_searchable=True,
     target_language="English",
     jpeg_quality=70,
@@ -438,8 +450,11 @@ def process_pdf_document_pct(
         parts = split_image_vertically(img_pil) if do_split else [img_pil]
 
         for idx, part in enumerate(parts):
+            if remove_white_pages and is_blank_page(part):
+                continue
+
             # Capture cropped first page for instrument OCR (before enhance)
-            if page_num == 0 and idx == 0:
+            if first_page_cropped is None:
                 w, h = part.size
                 left = int((crop_x / 100.0) * w)
                 top = int((crop_y / 100.0) * h)

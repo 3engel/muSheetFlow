@@ -39,10 +39,12 @@ export default function ExportSettings({
   doSplit,
   autoDeskew,
   autoEnhance,
+  removeWhitePages,
   jpegQuality,
   targetLang,
   onAutoDeskewChange,
   onAutoEnhanceChange,
+  onRemoveWhitePagesChange,
   onJpegQualityChange,
   onTargetLangChange,
   onExportStarted,
@@ -53,10 +55,12 @@ export default function ExportSettings({
   doSplit: boolean;
   autoDeskew: boolean;
   autoEnhance: boolean;
+  removeWhitePages: boolean;
   jpegQuality: number;
   targetLang: string;
   onAutoDeskewChange: (v: boolean) => void;
   onAutoEnhanceChange: (v: boolean) => void;
+  onRemoveWhitePagesChange: (v: boolean) => void;
   onJpegQualityChange: (v: number) => void;
   onTargetLangChange: (v: string) => void;
   onExportStarted: () => void;
@@ -73,6 +77,7 @@ export default function ExportSettings({
         target_language: targetLang,
         auto_deskew: autoDeskew,
         auto_enhance: autoEnhance,
+        remove_white_pages: removeWhitePages,
         jpeg_quality: jpegQuality,
       });
     },
@@ -124,6 +129,19 @@ export default function ExportSettings({
               <FieldContent>
                 <FieldTitle>{t("export.contrast")}</FieldTitle>
                 <FieldDescription>{t("export.contrastDesc")}</FieldDescription>
+              </FieldContent>
+            </Field>
+            <Field orientation="horizontal">
+              <Checkbox
+                id="remove-white-pages"
+                name="remove-white-pages"
+                checked={removeWhitePages}
+                onCheckedChange={(v) => onRemoveWhitePagesChange(!!v)}
+              />
+
+              <FieldContent>
+                <FieldTitle>{t("export.removeWhitePages")}</FieldTitle>
+                <FieldDescription>{t("export.removeWhitePagesDesc")}</FieldDescription>
               </FieldContent>
             </Field>
             <div className="flex w-full flex-col gap-4">

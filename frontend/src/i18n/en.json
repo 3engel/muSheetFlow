@@ -102,6 +102,8 @@
     "deskewDesc": "Automatically straightens crooked scanned scores. Works best when the skew is not too extreme.",
     "contrast": "Auto-contrast",
     "contrastDesc": "Automatically improves the contrast of scanned scores. Works best when scores are slightly faded or unevenly lit.",
+    "removeWhitePages": "Remove blank pages",
+    "removeWhitePagesDesc": "Skips pages that contain (almost) no black pixels (notes).",
     "quality": "Output quality",
     "ocrLanguage": "OCR language for text recognition",
     "selectLanguage": "Select OCR language",
@@ -152,7 +154,10 @@
     "topPlacement": "Top offset",
     "leftPlacement": "Left offset",
     "previewSettings": "Preview image settings",
-    "previewSettingsDesc": "Settings for the preview images to better assign instruments."
+    "previewSettingsDesc": "Settings for the preview images to better assign instruments.",
+    "downloadSingleVoice": "Download single voice",
+    "duplicateNamesTitle": "Duplicate file names detected",
+    "duplicateNamesDesc": "Multiple entries result in the same export filename. Please adjust instrument, voice, or key for these files to ensure they are unique."
   },
   "mapping": {
     "title": "Instruments",
