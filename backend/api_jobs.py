@@ -16,6 +16,7 @@ class ExportJobRequest(BaseModel):
     auto_enhance: bool = True
     remove_white_pages: bool = False
     jpeg_quality: int = 70
+    output_format: str = "A4 Portrait"
 
 class FinalizeJobRequest(BaseModel):
     assignments: Dict[str, str] # temp_filename -> mapped instrument string
@@ -49,6 +50,7 @@ def _process_single_file(filename, project_path, job_dir, req):
         auto_contrast=req.auto_enhance,
         remove_white_pages=req.remove_white_pages,
         jpeg_quality=req.jpeg_quality,
+        output_format=req.output_format,
     )
 
     uid = uuid.uuid4().hex

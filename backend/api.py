@@ -64,6 +64,7 @@ class ProjectSettings(BaseModel):
     jpeg_quality: int = 75
     target_language: str = "Deutsch"
     tab: str = "upload"
+    output_format: str = "A4 Portrait"
 
 
 def _settings_path(project_name: str) -> str:

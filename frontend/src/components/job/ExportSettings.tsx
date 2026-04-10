@@ -42,11 +42,13 @@ export default function ExportSettings({
   removeWhitePages,
   jpegQuality,
   targetLang,
+  outputFormat,
   onAutoDeskewChange,
   onAutoEnhanceChange,
   onRemoveWhitePagesChange,
   onJpegQualityChange,
   onTargetLangChange,
+  onOutputFormatChange,
   onExportStarted,
 }: {
   project: string;
@@ -58,11 +60,13 @@ export default function ExportSettings({
   removeWhitePages: boolean;
   jpegQuality: number;
   targetLang: string;
+  outputFormat: string;
   onAutoDeskewChange: (v: boolean) => void;
   onAutoEnhanceChange: (v: boolean) => void;
   onRemoveWhitePagesChange: (v: boolean) => void;
   onJpegQualityChange: (v: number) => void;
   onTargetLangChange: (v: string) => void;
+  onOutputFormatChange: (v: string) => void;
   onExportStarted: () => void;
 }) {
   const queryClient = useQueryClient();
@@ -75,6 +79,7 @@ export default function ExportSettings({
         do_split: doSplit,
         crop: { x: crop.x, y: crop.y, width: crop.width, height: crop.height },
         target_language: targetLang,
+        output_format: outputFormat,
         auto_deskew: autoDeskew,
         auto_enhance: autoEnhance,
         remove_white_pages: removeWhitePages,
@@ -160,6 +165,36 @@ export default function ExportSettings({
                 max={100}
               />
             </div>
+
+            <Field>
+              <FieldLabel htmlFor="output-format">
+                {t("export.outputFormat")}
+              </FieldLabel>
+              <Select
+                id="output-format"
+                onValueChange={(value) => {
+                  if (value) onOutputFormatChange(value);
+                }}
+                value={outputFormat}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={t("export.selectOutputFormat")} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="A4 Portrait">
+                      {t("export.a4Portrait")}
+                    </SelectItem>
+                    <SelectItem value="A4 Landscape">
+                      {t("export.a4Landscape")}
+                    </SelectItem>
+                    <SelectItem value="As cropped">
+                      {t("export.asCropped")}
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </Field>
 
             <Field>
               <FieldLabel htmlFor="ocr-language">

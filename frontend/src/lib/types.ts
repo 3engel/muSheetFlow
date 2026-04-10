@@ -49,4 +49,5 @@ export type ProjectSettings = {
   jpeg_quality: number
   target_language: string
   tab: string
+  output_format: string
 }

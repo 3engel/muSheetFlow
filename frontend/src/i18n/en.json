@@ -93,7 +93,7 @@
   },
   "crop": {
     "instruction": "Drag the area you want to keep with the mouse (everything outside will be cropped).",
-    "a4Info": "The blue rectangle represents the final A4 page. All scores in your project are overlaid for comparison.",
+    "info": "All scores in your project are overlaid for comparison.",
     "loading": "Loading preview with all overlaid score sheets..."
   },
   "export": {
@@ -105,6 +105,11 @@
     "removeWhitePages": "Remove blank pages",
     "removeWhitePagesDesc": "Skips pages that contain (almost) no black pixels (notes).",
     "quality": "Output quality",
+    "outputFormat": "Output format",
+    "selectOutputFormat": "Select format",
+    "a4Portrait": "A4 Portrait",
+    "a4Landscape": "A4 Landscape",
+    "asCropped": "As cropped",
     "ocrLanguage": "OCR language for text recognition",
     "selectLanguage": "Select OCR language",
     "german": "German",
@@ -124,11 +129,11 @@
     "downloadZip": "Download ZIP",
     "deleteJob": "Delete job",
     "noJobs": "No jobs available.",
-    "deleteTitle": "Delete job {{name}}",
-    "deleteConfirm": "Should the job <strong>{{name}}</strong> (Id: {{id}}) be deleted?",
+    "deleteTitle": "Delete job \"{{name}}\"",
+    "deleteConfirm": "Should the job \"{{name}}\" (Id: {{id}}) be deleted?",
     "cancel": "Cancel",
     "deleteForever": "Delete permanently",
-    "deleted": "Job {{name}} (Id: {{id}}) deleted successfully"
+    "deleted": "Job \"{{name}}\" (Id: {{id}}) deleted successfully"
   },
   "jobDetail": {
     "assignInstruments": "Assign instruments",

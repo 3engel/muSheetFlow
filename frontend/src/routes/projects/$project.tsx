@@ -132,11 +132,13 @@ function RouteComponent() {
             removeWhitePages={settings.remove_white_pages ?? false}
             jpegQuality={settings.jpeg_quality ?? 70}
             targetLang={settings.target_language}
+            outputFormat={settings.output_format || "A4 Portrait"}
             onAutoDeskewChange={(v) => updateSettings({ auto_deskew: v })}
             onAutoEnhanceChange={(v) => updateSettings({ auto_enhance: v })}
             onRemoveWhitePagesChange={(v) => updateSettings({ remove_white_pages: v })}
             onJpegQualityChange={(v) => updateSettings({ jpeg_quality: v })}
             onTargetLangChange={(v) => updateSettings({ target_language: v })}
+            onOutputFormatChange={(v) => updateSettings({ output_format: v })}
             onExportStarted={() => navigate({ to: "/jobs" })}
           />
         </TabsContent>

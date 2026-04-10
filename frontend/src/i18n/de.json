@@ -93,7 +93,7 @@
   },
   "crop": {
     "instruction": "Ziehe mit der Maus den Bereich auf, der erhalten bleiben soll (alles außerhalb wird weggeschnitten).",
-    "a4Info": "Das blaue Rechteck repräsentiert das spätere DIN A4-Blatt. Hierbei werden alle Noten deines Projekts zum Abgleichen \"übereinander\" gelegt.",
+    "info": "Alle Noten deines Projekts zum Abgleichen \"übereinander\" gelegt.",
     "loading": "Lade Vorschau mit allen überlagerten Notenblättern..."
   },
   "export": {
@@ -105,6 +105,11 @@
     "removeWhitePages": "Leere Seiten überspringen",
     "removeWhitePagesDesc": "Verwirft Seiten, die (fast) keine schwarzen Pixel (Noten) enthalten.",
     "quality": "Ausgabequalität",
+    "outputFormat": "Ausgabeformat",
+    "selectOutputFormat": "Format wählen",
+    "a4Portrait": "A4 Hochformat",
+    "a4Landscape": "A4 Querformat",
+    "asCropped": "Wie Zuschnitt",
     "ocrLanguage": "OCR Sprache für Texterkennung",
     "selectLanguage": "OCR Sprache wählen",
     "german": "Deutsch",
@@ -124,11 +129,11 @@
     "downloadZip": "ZIP Herunterladen",
     "deleteJob": "Job löschen",
     "noJobs": "Keine Jobs vorhanden.",
-    "deleteTitle": "Job {{name}} löschen",
-    "deleteConfirm": "Soll der Job <strong>{{name}}</strong> (Id: {{id}}) gelöscht werden.",
+    "deleteTitle": "Job \"{{name}}\" löschen",
+    "deleteConfirm": "Soll der Job \"{{name}}\" (Id: {{id}}) gelöscht werden?",
     "cancel": "Abbrechen",
     "deleteForever": "Unwiderruflich löschen",
-    "deleted": "Job {{name}} (Id: {{id}}) erfolgreich gelöscht"
+    "deleted": "Job \"{{name}}\" (Id: {{id}}) erfolgreich gelöscht"
   },
   "jobDetail": {
     "assignInstruments": "Instrumente zuweisen",

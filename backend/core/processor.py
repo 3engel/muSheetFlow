@@ -373,6 +373,7 @@ def apply_percentage_crop_and_center(
     is_preview=False,
     auto_fix_deskew=False,
     enhance=False,
+    output_format="A4 Portrait",
 ):
     w, h = image_pil.size
 
@@ -392,28 +393,37 @@ def apply_percentage_crop_and_center(
     if auto_fix_deskew and not is_preview:
         cropped = auto_deskew_cropped(cropped)
 
-    a4_w = int((210 / 25.4) * dpi)
-    a4_h = int((297 / 25.4) * dpi)
-    margin_px = int((margin_mm / 25.4) * dpi)
-
-    cw, ch = cropped.size
-
-    scale_w = (a4_w - 2 * margin_px) / float(cw)
-    scale_h = (a4_h - 2 * margin_px) / float(ch)
-    scale = min(scale_w, scale_h)
-
-    new_w = int(cw * scale)
-    new_h = int(ch * scale)
-
-    if new_w > 0 and new_h > 0:
-        resized = cropped.resize((new_w, new_h), Image.Resampling.LANCZOS)
+    if output_format == "As cropped":
+        final_canvas = cropped
     else:
-        resized = cropped
+        if output_format == "A4 Landscape":
+            a4_w = int((297 / 25.4) * dpi)
+            a4_h = int((210 / 25.4) * dpi)
+        else:
+            # Default to A4 Portrait
+            a4_w = int((210 / 25.4) * dpi)
+            a4_h = int((297 / 25.4) * dpi)
 
-    final_canvas = Image.new("RGB", (a4_w, a4_h), (255, 255, 255))
-    paste_x = (a4_w - new_w) // 2
-    paste_y = (a4_h - new_h) // 2
-    final_canvas.paste(resized, (paste_x, paste_y))
+        margin_px = int((margin_mm / 25.4) * dpi)
+
+        cw, ch = cropped.size
+
+        scale_w = (a4_w - 2 * margin_px) / float(cw)
+        scale_h = (a4_h - 2 * margin_px) / float(ch)
+        scale = min(scale_w, scale_h)
+
+        new_w = int(cw * scale)
+        new_h = int(ch * scale)
+
+        if new_w > 0 and new_h > 0:
+            resized = cropped.resize((new_w, new_h), Image.Resampling.LANCZOS)
+        else:
+            resized = cropped
+
+        final_canvas = Image.new("RGB", (a4_w, a4_h), (255, 255, 255))
+        paste_x = (a4_w - new_w) // 2
+        paste_y = (a4_h - new_h) // 2
+        final_canvas.paste(resized, (paste_x, paste_y))
 
     if enhance and not is_preview:
         final_canvas = enhance_contrast_v3(final_canvas)
@@ -436,6 +446,7 @@ def process_pdf_document_pct(
     create_searchable=True,
     target_language="English",
     jpeg_quality=70,
+    output_format="A4 Portrait",
 ):
     pdf_document = fitz.open(pdf_path)
     output_pdf = fitz.open()
@@ -477,6 +488,7 @@ def process_pdf_document_pct(
                 is_preview=False,
                 auto_fix_deskew=auto_deskew_after,
                 enhance=auto_contrast,
+                output_format=output_format,
             )
 
             img_byte_arr = io.BytesIO()

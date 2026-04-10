@@ -48,7 +48,7 @@ export default function CropTool({
               {t("crop.instruction")}
             </p>
             <p>
-              {t("crop.a4Info")}
+              {t("crop.info")}
             </p>
           </CardDescription>
         </CardHeader>
