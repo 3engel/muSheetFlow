@@ -1,10 +1,10 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useCallback, useRef } from "react";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
-import FileList from "@/components/job/FileList";
-import CropTool from "@/components/job/CropTool";
-import RotationTool from "@/components/job/RotationTool";
-import ExportSettings from "@/components/job/ExportSettings";
+import FileList from "@/components/project/FileList";
+import CropTool from "@/components/project/CropTool";
+import RotationTool from "@/components/project/RotationTool";
+import ExportSettings from "@/components/project/ExportSettings";
 import type { Crop } from "react-image-crop";
 import type { ProjectSettings } from "@/lib/types";
 import {
@@ -15,7 +15,7 @@ import {
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { useTranslation } from "react-i18next";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { JobTabs } from "@/components/job/JobTabs";
+import { JobTabs } from "@/components/project/JobTabs";
 import { queryClient } from "@/main";
 
 export const Route = createFileRoute("/projects/$project")({

@@ -364,6 +364,48 @@ async def download_job(job_id: str):
     )
 
 
+@app.get("/jobs/{job_id}/download_single")
+async def download_single_job_file(job_id: str, temp_file: str, instrument: str):
+    from urllib.parse import quote
+    from core.mapping import standardize_name
+    
+    if job_id not in jobs_db:
+        return Response(status_code=404)
+
+    job_dir = os.path.join(OUTPUT_DIR, job_id)
+    project_name = jobs_db[job_id]["project"]
+
+    src_pdf = os.path.join(job_dir, temp_file)
+    if not os.path.exists(src_pdf):
+        return Response(status_code=404)
+        
+    safe_instrument = "".join(
+        [c for c in instrument if c.isalpha() or c.isdigit() or c == " "]
+    ).rstrip()
+    if not safe_instrument:
+        safe_instrument = "Unknown"
+
+    pdf_doc = fitz.open(src_pdf)
+    metadata = pdf_doc.metadata
+    
+    metadata["title"] = project_name
+    metadata["subject"] = safe_instrument
+    metadata["keywords"] = safe_instrument
+    
+    pdf_doc.set_metadata(metadata)
+    out_bytes = pdf_doc.tobytes()
+    pdf_doc.close()
+
+    target_filename = f"{project_name} - {safe_instrument}.pdf"
+    encoded_filename = quote(target_filename)
+    
+    return Response(
+        content=out_bytes,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f"attachment; filename*=UTF-8''{encoded_filename}"}
+    )
+
+
 # -- MAPPING API --
 from core.mapping import load_mapping, save_mapping
 from typing import Any
@@ -550,7 +592,21 @@ async def finalize_job(job_id: str, payload: dict):
                 ).rstrip()
                 if not safe_instrument:
                     safe_instrument = "Unknown"
+                
+                
+                pdf_doc = fitz.open(src_pdf)
+                metadata = pdf_doc.metadata
+                metadata["title"] = project_name
+                
+                metadata["subject"] = safe_instrument
+                metadata["keywords"] = safe_instrument
+                pdf_doc.set_metadata(metadata)
+                
+                pdf_doc.saveIncr()
+                pdf_doc.close()
+                
                 target_filename = f"{project_name} - {safe_instrument}.pdf"
+                
                 zipf.write(src_pdf, target_filename)
 
     jobs_db[job_id]["status"] = "completed"

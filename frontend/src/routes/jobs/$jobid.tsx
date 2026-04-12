@@ -161,10 +161,17 @@ function RouteComponent() {
 
   const getPreviewFileName = useMemo(
     () => (r: JobResult) => {
+      return `${jobDetails.project} - ${getInstrumentVoiceKeyName(r)}.pdf`.trim();
+    },
+    [jobDetails.project],
+  );
+
+    const getInstrumentVoiceKeyName = useMemo(
+    () => (r: JobResult) => {
       const instrumentPart = r.instrument ? `${r.instrument} ` : "";
       const voicePart = r.voice ? `${r.voice} ` : "";
       const keyPart = r.key ? `${r.key}` : "";
-      return `${jobDetails.project} - ${instrumentPart}${voicePart}${keyPart}.pdf`.trim();
+      return `${instrumentPart}${voicePart}${keyPart}`.trim();
     },
     [jobDetails.project],
   );
@@ -474,7 +481,7 @@ function RouteComponent() {
                   className="w-full"
                   render={
                     <a
-                      href={`${API_BASE_URL}/exports/${jobid}/${r.temp_file}`}
+                      href={`${API_BASE_URL}/jobs/${jobid}/download_single?temp_file=${r.temp_file}&instrument=${getInstrumentVoiceKeyName(r)}`}
                       download={getPreviewFileName(r)}
                     />
                   }

@@ -6,7 +6,7 @@ A full-stack application for processing and organizing music sheet documents. It
 
 - **Project-based PDF management** — Upload and organize sheet music into projects
 - **OCR instrument extraction** — Automatically detect instrument names from sheet headers (English, German, Italian)
-- **Page transformations** — Rotation, splitting (left/right pages), cropping, deskewing, and contrast enhancement
+- **Page transformations** — Rotation, splitting (left/right pages), cropping, deskewing, formatting, and contrast enhancement
 - **Instrument mapping** — Standardize multilingual instrument names with key and voice detection
 - **Overlay generation** — Visual comparison of multiple score versions
 - **Export pipeline** — Generate enhanced PDFs with searchable text layers
@@ -85,7 +85,7 @@ muSheetFlow/
 1. **PDF → Image** — Convert pages at 300 DPI
 2. **Rotate & Deskew** — Apply rotation and auto-straighten via Hough line detection
 3. **Split** — Optionally divide pages for two-page spreads
-4. **Crop** — Percentage-based crop with A4 canvas normalization
+4. **Crop & Format** — Percentage-based crop with customizable canvas formatting (A4 Portrait, A4 Landscape, or As cropped)
 5. **Enhance** — Dynamic contrast optimization
 6. **OCR** — Extract instrument name from the top section of each page
 7. **Reconstruct** — Embed images into PDF with searchable text layer

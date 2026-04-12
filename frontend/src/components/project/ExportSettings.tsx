@@ -31,6 +31,7 @@ import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { InfoIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { OUTPUT_FORMATS } from "@/lib/constants";
 
 export default function ExportSettings({
   project,
@@ -98,6 +99,11 @@ export default function ExportSettings({
     },
   });
 
+  const translated_output_format = OUTPUT_FORMATS.map((f) => ({
+    ...f,
+    label: t(f.label),
+  }));
+
   const startExport = () => {
     exportMutation.mutate();
   };
@@ -146,7 +152,9 @@ export default function ExportSettings({
 
               <FieldContent>
                 <FieldTitle>{t("export.removeWhitePages")}</FieldTitle>
-                <FieldDescription>{t("export.removeWhitePagesDesc")}</FieldDescription>
+                <FieldDescription>
+                  {t("export.removeWhitePagesDesc")}
+                </FieldDescription>
               </FieldContent>
             </Field>
             <div className="flex w-full flex-col gap-4">
@@ -171,6 +179,7 @@ export default function ExportSettings({
                 {t("export.outputFormat")}
               </FieldLabel>
               <Select
+                items={translated_output_format}
                 id="output-format"
                 onValueChange={(value) => {
                   if (value) onOutputFormatChange(value);
@@ -182,15 +191,14 @@ export default function ExportSettings({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="A4 Portrait">
-                      {t("export.a4Portrait")}
-                    </SelectItem>
-                    <SelectItem value="A4 Landscape">
-                      {t("export.a4Landscape")}
-                    </SelectItem>
-                    <SelectItem value="As cropped">
-                      {t("export.asCropped")}
-                    </SelectItem>
+                    {translated_output_format.map((format) => (
+                      <SelectItem
+                        key={format.value}
+                        value={format.value}
+                      >
+                        {format.label}
+                      </SelectItem>
+                    ))}
                   </SelectGroup>
                 </SelectContent>
               </Select>
