@@ -143,6 +143,67 @@ async def list_files(project_name: str):
     return files
 
 
+class VoiceGroupIn(BaseModel):
+    name: str
+    pages: List[int]
+
+
+class SplitVoicesRequest(BaseModel):
+    groups: List[VoiceGroupIn]
+    delete_original: bool = False
+
+
+@app.post("/projects/{project_name}/files/{filename}/analyze-voices")
+async def analyze_voices(
+    project_name: str,
+    filename: str,
+    target_language: str = "Deutsch",
+):
+    from core.voice_split import analyze_pdf_voices
+
+    project_path = os.path.join(UPLOAD_DIR, project_name)
+    pdf_path = os.path.join(project_path, filename)
+    if not os.path.exists(pdf_path):
+        return Response(status_code=404)
+
+    try:
+        result = analyze_pdf_voices(pdf_path, target_language=target_language)
+        return result
+    except Exception as e:
+        return Response(status_code=500, content=str(e))
+
+
+@app.post("/projects/{project_name}/files/{filename}/split-voices")
+async def split_voices(
+    project_name: str,
+    filename: str,
+    req: SplitVoicesRequest,
+):
+    from core.voice_split import split_pdf_by_groups
+
+    project_path = os.path.join(UPLOAD_DIR, project_name)
+    pdf_path = os.path.join(project_path, filename)
+    if not os.path.exists(pdf_path):
+        return Response(status_code=404)
+
+    try:
+        groups_payload = [g.model_dump() for g in req.groups]
+        created = split_pdf_by_groups(
+            pdf_path=pdf_path,
+            groups=groups_payload,
+            output_dir=project_path,
+            base_filename=filename,
+        )
+        if req.delete_original and created:
+            try:
+                os.remove(pdf_path)
+            except OSError:
+                pass
+        return {"status": "success", "created_files": created}
+    except Exception as e:
+        return Response(status_code=500, content=str(e))
+
+
 @app.delete("/projects/{project_name}/files")
 async def delete_files(project_name: str, files: List[str] = Body(...)):
     project_path = os.path.join(UPLOAD_DIR, project_name)
@@ -214,6 +275,7 @@ from core.processor import (
     pdf_page_to_image,
     deskew_image,
     split_image_vertically,
+    is_landscape_pil,
     extract_instrument_name_ocr,
 )
 
@@ -238,7 +300,11 @@ async def batch_preview(project_name: str, req: BatchPreviewRequest):
                 )  # use 150 dpi for faster preview OCR
                 img_pil = deskew_image(img_pil, 0.0, req.rotation)
 
-                parts = split_image_vertically(img_pil) if req.do_split else [img_pil]
+                parts = (
+                    split_image_vertically(img_pil)
+                    if req.do_split and is_landscape_pil(img_pil)
+                    else [img_pil]
+                )
 
                 for idx, part in enumerate(parts):
                     w, h = part.size
@@ -378,10 +444,11 @@ async def download_single_job_file(job_id: str, temp_file: str, instrument: str)
     src_pdf = os.path.join(job_dir, temp_file)
     if not os.path.exists(src_pdf):
         return Response(status_code=404)
-        
+
+    _ALLOWED_PUNCT = set(" -_.,()'+")
     safe_instrument = "".join(
-        [c for c in instrument if c.isalpha() or c.isdigit() or c == " "]
-    ).rstrip()
+        c for c in instrument if c.isalpha() or c.isdigit() or c in _ALLOWED_PUNCT
+    ).strip()
     if not safe_instrument:
         safe_instrument = "Unknown"
 
@@ -451,7 +518,11 @@ async def preview_crop(
         img_pil = pdf_page_to_image(page, dpi=100)  # Fast render for small thumbnail
         img_pil = deskew_image(img_pil, 0.0, rotation)
 
-        parts = split_image_vertically(img_pil) if do_split else [img_pil]
+        parts = (
+            split_image_vertically(img_pil)
+            if do_split and is_landscape_pil(img_pil)
+            else [img_pil]
+        )
         part = parts[0]
 
         w, h = part.size
@@ -583,13 +654,14 @@ async def finalize_job(job_id: str, payload: dict):
 
     zip_path = os.path.join(OUTPUT_DIR, f"{project_name}_export_{job_id[:8]}.zip")
 
+    _ALLOWED_PUNCT = set(" -_.,()'+")
     with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
         for temp_file, instr in payload.get("assignments", {}).items():
             src_pdf = os.path.join(job_dir, temp_file)
             if os.path.exists(src_pdf):
                 safe_instrument = "".join(
-                    [c for c in instr if c.isalpha() or c.isdigit() or c == " "]
-                ).rstrip()
+                    c for c in instr if c.isalpha() or c.isdigit() or c in _ALLOWED_PUNCT
+                ).strip()
                 if not safe_instrument:
                     safe_instrument = "Unknown"
                 

@@ -1,9 +1,9 @@
-import { CheckSquare, CircleX } from "lucide-react";
+import { CheckSquare, CircleX, Scissors } from "lucide-react";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import { Checkbox } from "../ui/checkbox";
-import { useMutation } from "@tanstack/react-query";
-import { projectFilesDeleteMutationOptions } from "@/lib/queries";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { projectFilesDeleteMutationOptions, projectSettingsQueryOptions } from "@/lib/queries";
 import { queryClient } from "@/main";
 import { toast } from "sonner";
 import {
@@ -18,6 +18,7 @@ import { FileInfo } from "@/lib/types";
 import { formatFileSize } from "@/lib/utils";
 import FileUpload from "./FileUpload";
 import { useTranslation } from "react-i18next";
+import SplitByVoicesDialog from "./SplitByVoicesDialog";
 
 export default function FileList({
   project,
@@ -27,7 +28,9 @@ export default function FileList({
   files: FileInfo[];
 }) {
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set([]));
+  const [splitFile, setSplitFile] = useState<string | null>(null);
   const { t, i18n } = useTranslation();
+  const { data: settings } = useQuery(projectSettingsQueryOptions(project));
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
@@ -127,6 +130,7 @@ export default function FileList({
               </TableHead>
               <TableHead className="text-right">{t("files.size")}</TableHead>
               <TableHead className="text-right">{t("files.createdAt")}</TableHead>
+              <TableHead className="text-right">{t("files.actions")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -153,10 +157,32 @@ export default function FileList({
                     timeStyle: "short",
                   })}
                 </TableCell>
+                <TableCell className="text-right">
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    onClick={() => setSplitFile(file.filename)}
+                    aria-label={t("files.splitVoices")}
+                    title={t("files.splitVoices")}
+                  >
+                    <Scissors className="size-4" />
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
+      )}
+      {splitFile && (
+        <SplitByVoicesDialog
+          project={project}
+          filename={splitFile}
+          targetLanguage={settings?.target_language ?? "Deutsch"}
+          open={splitFile !== null}
+          onOpenChange={(open) => {
+            if (!open) setSplitFile(null);
+          }}
+        />
       )}
     </div>
   );

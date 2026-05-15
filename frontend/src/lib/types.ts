@@ -36,6 +36,21 @@ export type FileInfo = {
   created_at: string
 }
 
+export type VoiceGroup = {
+  name: string
+  instrument: string
+  voice: string
+  key: string
+  pages: number[]
+  raw_ocr: string[]
+  thumbnails: string[]
+}
+
+export type VoiceAnalysis = {
+  groups: VoiceGroup[]
+  page_count: number
+}
+
 export type ProjectSettings = {
   rotation: number
   do_split: boolean

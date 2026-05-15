@@ -76,6 +76,15 @@ def split_image_vertically(image_pil):
     return [left, right]
 
 
+def is_landscape_pil(image_pil):
+    w, h = image_pil.size
+    return w > h
+
+
+def is_landscape_arr(image_arr):
+    return image_arr.shape[1] > image_arr.shape[0]
+
+
 def split_array_vertically(image_arr):
     mid = image_arr.shape[1] // 2
     return [image_arr[:, :mid, :], image_arr[:, mid:, :]]
@@ -249,34 +258,64 @@ def is_blank_page(image_pil, threshold=220, min_ink_pct=0.005):
     ink_pct = ink_pixels / total_pixels
     return ink_pct < min_ink_pct
 
-def auto_deskew_cropped(image_pil):
-    """Auto-deskew after cropping based on horizontal stave lines."""
-    img_cv = np.array(image_pil.convert("L"))
-    edges = cv2.Canny(img_cv, 50, 150, apertureSize=3)
-    (h, w) = img_cv.shape[:2]
-    min_len = int(w * 0.2)
-    lines = cv2.HoughLinesP(
-        edges, 1, np.pi / 180, threshold=100, minLineLength=min_len, maxLineGap=20
+def auto_deskew_cropped(image_pil, max_angle=3.0):
+    """
+    Auto-deskew via horizontal projection variance.
+    Robust für Notenseiten: bei korrekter Ausrichtung fallen die Notenlinien
+    auf wenige Bildzeilen, was zu hoher Varianz in der Zeilensumme führt.
+    Coarse search ±max_angle in 0.5° Schritten, dann fine in 0.1°.
+    """
+    img_gray = np.array(image_pil.convert("L"))
+    h0, w0 = img_gray.shape
+
+    # Downsample für die Winkelsuche (Genauigkeit reicht, ist aber 5–10x schneller)
+    target_w = 800
+    if w0 > target_w:
+        scale = target_w / float(w0)
+        small = cv2.resize(
+            img_gray,
+            (target_w, int(h0 * scale)),
+            interpolation=cv2.INTER_AREA,
+        )
+    else:
+        small = img_gray
+
+    # Binarisieren: Ink = 1, Papier = 0
+    _, binimg = cv2.threshold(
+        small, 0, 1, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU
     )
+    binimg = binimg.astype(np.uint8)
 
-    angles = []
-    if lines is not None:
-        for line in lines:
-            x1, y1, x2, y2 = line[0]
-            angle = np.degrees(np.arctan2(y2 - y1, x2 - x1))
-            if -10 <= angle <= 10:
-                angles.append(angle)
-
-    best_angle = 0.0
-    if len(angles) > 0:
-        best_angle = float(np.median(angles))
-
-    if abs(best_angle) < 0.1:
+    if binimg.sum() < 50:
         return image_pil
 
-    # Rotate using PIL on RGB for better anti-aliasing before binarization
+    bh, bw = binimg.shape
+    center = (bw / 2.0, bh / 2.0)
+
+    def projection_variance(angle):
+        M = cv2.getRotationMatrix2D(center, angle, 1.0)
+        rotated = cv2.warpAffine(
+            binimg, M, (bw, bh),
+            flags=cv2.INTER_NEAREST,
+            borderMode=cv2.BORDER_CONSTANT,
+            borderValue=0,
+        )
+        proj = rotated.sum(axis=1).astype(np.float32)
+        return float(proj.var())
+
+    coarse_angles = np.arange(-max_angle, max_angle + 1e-6, 0.5)
+    coarse_scores = [projection_variance(a) for a in coarse_angles]
+    best_coarse = float(coarse_angles[int(np.argmax(coarse_scores))])
+
+    fine_angles = np.arange(best_coarse - 0.5, best_coarse + 0.5 + 1e-6, 0.1)
+    fine_scores = [projection_variance(a) for a in fine_angles]
+    best_angle = float(fine_angles[int(np.argmax(fine_scores))])
+
+    if abs(best_angle) < 0.15:
+        return image_pil
+
     return image_pil.rotate(
-        -best_angle, expand=True, resample=Image.BICUBIC, fillcolor=(255, 255, 255)
+        best_angle, expand=True, resample=Image.BICUBIC, fillcolor=(255, 255, 255)
     )
 
 
@@ -338,7 +377,9 @@ def generate_overlay(
                     image_arr = deskew_array(image_arr, manual_angle, base_rotation)
 
                     parts = (
-                        split_array_vertically(image_arr) if do_split else [image_arr]
+                        split_array_vertically(image_arr)
+                        if do_split and is_landscape_arr(image_arr)
+                        else [image_arr]
                     )
                     for part in parts:
                         blended = blend_overlay(blended, part)
@@ -458,7 +499,11 @@ def process_pdf_document_pct(
         img_pil = pdf_page_to_image(page, dpi=300)
         img_pil = deskew_image(img_pil, manual_angle, base_rotation)
 
-        parts = split_image_vertically(img_pil) if do_split else [img_pil]
+        parts = (
+            split_image_vertically(img_pil)
+            if do_split and is_landscape_pil(img_pil)
+            else [img_pil]
+        )
 
         for idx, part in enumerate(parts):
             if remove_white_pages and is_blank_page(part):

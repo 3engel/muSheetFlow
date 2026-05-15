@@ -65,7 +65,29 @@
     "filename": "Filename",
     "size": "Size",
     "createdAt": "Created on",
+    "actions": "Actions",
+    "splitVoices": "Split by voices",
     "deleted": "Files deleted successfully!"
+  },
+  "voiceSplit": {
+    "title": "Split by voices — {{filename}}",
+    "description": "The PDF is analyzed page by page via OCR. Consecutive pages with the same header are merged into a voice group. You can move pages between groups, rename groups, or add new groups.",
+    "analyzing": "Analyzing pages…",
+    "noGroups": "No voices detected.",
+    "groupNamePlaceholder": "Voice name",
+    "page": "Page {{n}}",
+    "moveLeft": "Move to previous group",
+    "moveRight": "Move to next group",
+    "removeGroup": "Remove group",
+    "addGroup": "New group",
+    "deleteOriginal": "Delete original file after split",
+    "cancel": "Cancel",
+    "split": "Split",
+    "splitting": "Splitting…",
+    "success": "{{count}} voice PDFs created.",
+    "validationEmpty": "At least one group must contain pages.",
+    "validationOrphans": "{{count}} pages are not assigned to any group.",
+    "validationDuplicates": "Pages may only be in one group."
   },
   "upload": {
     "addPdfs": "Add PDFs to project",
@@ -87,7 +109,7 @@
   },
   "rotation": {
     "description": "Rotate the score to an upright position. For better performance, only page 1 is shown here.",
-    "splitA3": "Split PDF in the middle (e.g. A3 → 2x A4)",
+    "splitA3": "Auto-split A3 pages in the middle (A4 pages stay unchanged)",
     "left": "Left",
     "right": "Right"
   },

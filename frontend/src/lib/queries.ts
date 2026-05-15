@@ -1,5 +1,5 @@
 import { api } from "@/lib/api";
-import { FileInfo, Job, JobResult, Mapping, Project, ProjectSettings } from "@/lib/types";
+import { FileInfo, Job, JobResult, Mapping, Project, ProjectSettings, VoiceAnalysis, VoiceGroup } from "@/lib/types";
 import { queryClient } from "@/main";
 import { mutationOptions, queryOptions } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -177,6 +177,47 @@ export const projectFilesDeleteMutationOptions = () => {
         description: error.message
       });
     }
+  });
+}
+
+export const analyzeVoicesMutationOptions = () => {
+  return mutationOptions({
+    mutationFn: async ({ projectName, filename, targetLanguage }: { projectName: string; filename: string; targetLanguage: string }) => {
+      const res = await api.post<VoiceAnalysis>(
+        `/projects/${projectName}/files/${encodeURIComponent(filename)}/analyze-voices?target_language=${encodeURIComponent(targetLanguage)}`,
+      );
+      return res.data;
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error(`Fehler bei der Stimm-Analyse.`, { description: error.message });
+    },
+  });
+}
+
+export const splitVoicesMutationOptions = () => {
+  return mutationOptions({
+    mutationFn: async ({
+      projectName,
+      filename,
+      groups,
+      deleteOriginal,
+    }: {
+      projectName: string;
+      filename: string;
+      groups: Pick<VoiceGroup, "name" | "pages">[];
+      deleteOriginal: boolean;
+    }) => {
+      const res = await api.post<{ status: string; created_files: string[] }>(
+        `/projects/${projectName}/files/${encodeURIComponent(filename)}/split-voices`,
+        { groups, delete_original: deleteOriginal },
+      );
+      return res.data;
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error(`Fehler beim Splitten der Stimmen.`, { description: error.message });
+    },
   });
 }
 

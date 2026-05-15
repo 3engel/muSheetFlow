@@ -65,7 +65,29 @@
     "filename": "Dateiname",
     "size": "Größe",
     "createdAt": "Erstellt am",
+    "actions": "Aktionen",
+    "splitVoices": "Nach Stimmen trennen",
     "deleted": "Dateien erfolgreich gelöscht!"
+  },
+  "voiceSplit": {
+    "title": "Nach Stimmen trennen — {{filename}}",
+    "description": "Das PDF wird seitenweise per OCR analysiert. Konsekutive Seiten mit demselben Header werden zu einer Stimm-Gruppe zusammengefasst. Du kannst Seiten zwischen Gruppen verschieben, Gruppen umbenennen oder neue Gruppen anlegen.",
+    "analyzing": "Analysiere Seiten…",
+    "noGroups": "Keine Stimmen erkannt.",
+    "groupNamePlaceholder": "Stimmname",
+    "page": "Seite {{n}}",
+    "moveLeft": "In vorherige Gruppe",
+    "moveRight": "In nächste Gruppe",
+    "removeGroup": "Gruppe entfernen",
+    "addGroup": "Neue Gruppe",
+    "deleteOriginal": "Original-Datei nach dem Splitten löschen",
+    "cancel": "Abbrechen",
+    "split": "Splitten",
+    "splitting": "Splitte…",
+    "success": "{{count}} Stimm-PDFs erstellt.",
+    "validationEmpty": "Mindestens eine Gruppe muss Seiten enthalten.",
+    "validationOrphans": "{{count}} Seiten sind keiner Gruppe zugeordnet.",
+    "validationDuplicates": "Seiten dürfen nur in einer Gruppe sein."
   },
   "upload": {
     "addPdfs": "PDFs zum Projekt hinzufügen",
@@ -87,7 +109,7 @@
   },
   "rotation": {
     "description": "Drehe die Noten in aufrechte Position. Für bessere Performance wird hier nur Seite 1 angezeigt.",
-    "splitA3": "PDF mittig schneiden (z.B. wenn A3 → 2x A4)",
+    "splitA3": "A3-Seiten automatisch mittig teilen (A4-Seiten bleiben unverändert)",
     "left": "Links",
     "right": "Rechts"
   },

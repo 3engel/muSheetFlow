@@ -6,77 +6,81 @@ DATA_DIR = os.getenv("DATA_DIR", "../data")
 MAPPING_FILE = os.path.join(DATA_DIR, "instrument_mapping.json")
 
 DEFAULT_MAPPING = [
-    {"Term": "cymbals, becken", "English": "Cymbals", "Deutsch": "Becken"},
-    {"Term": "glockenspiel, chimes", "English": "Chimes", "Deutsch": "Glockenspiel"},
-    {
-        "Term": "double Bass, kontrabass",
-        "English": "Double Bass",
-        "Deutsch": "Kontrabass",
-    },
     {
         "Term": "alto clarinet, altklarinette",
         "English": "Alto Clarinet",
         "Deutsch": "Altklarinette",
     },
-    {"Term": "flöte, flauto, flute", "English": "Flute", "Deutsch": "Flöte"},
-    {"Term": "piccolo, pikkolo", "English": "Piccolo", "Deutsch": "Piccolo"},
     {
-        "Term": "klarinette, clarinetto, clarinet",
-        "English": "Clarinet",
-        "Deutsch": "Klarinette",
+        "Term": "altsaxophon, sax alto, alto sax, alto saxophone,alt-saxophon",
+        "English": "Alto Saxophone",
+        "Deutsch": "Altsaxophon",
+    },
+    {"Term": "bariton, baritone", "English": "Baritone", "Deutsch": "Bariton"},
+    {
+        "Term": "baritonsaxophon, baritone sax, bariton saxophon, baritone saxophone, baritone saxophon, bariton-saxophon",
+        "English": "Baritone Saxophone",
+        "Deutsch": "Baritonsaxophon",
     },
     {
         "Term": "bass klarinette, bass clarinet",
         "English": "Bass Clarinet",
         "Deutsch": "Bassklarinette",
     },
+    {"Term": "bassoon, fagott", "English": "Bassoon", "Deutsch": "Fagott"},
+    {"Term": "cymbals, becken", "English": "Cymbals", "Deutsch": "Becken"},
     {
-        "Term": "altsaxophon, sax alto, alto sax, alto saxophone",
-        "English": "Alto Saxophone",
-        "Deutsch": "Altsaxophon",
+        "Term": "direktion,partitur,score",
+        "English": "Full Score",
+        "Deutsch": "Partitur",
     },
     {
-        "Term": "tenorsaxophon, tenor sax, tenor saxophon, tenor saxophone",
-        "English": "Tenor Saxophone",
-        "Deutsch": "Tenorsaxophon",
+        "Term": "double Bass, kontrabass",
+        "English": "Double Bass",
+        "Deutsch": "Kontrabass",
     },
-    {
-        "Term": "baritonsaxophon, baritone sax, bariton saxophon, baritone saxophone, baritone saxophon",
-        "English": "Baritone Saxophone",
-        "Deutsch": "Baritonsaxophon",
-    },
-    {"Term": "trompete, tromba, trumpet", "English": "Trumpet", "Deutsch": "Trompete"},
-    {"Term": "kornett, cornet", "English": "Cornet", "Deutsch": "Kornett"},
+    {"Term": "e-bass, electric bass", "English": "Electric Bass", "Deutsch": "E-Bass"},
+    {"Term": "euphonium", "English": "Euphonium", "Deutsch": "Euphonium"},
+    {"Term": "flöte, flauto, flute", "English": "Flute", "Deutsch": "Flöte"},
     {
         "Term": "flügelhorn, flicorno, flugelhorn, fluegelhorn, fluegel horn, flügel horn, flugel horn",
         "English": "Flugelhorn",
         "Deutsch": "Flügelhorn",
     },
+    {"Term": "glockenspiel, chimes", "English": "Chimes", "Deutsch": "Glockenspiel"},
+    {"Term": "guitar, guitarre", "English": "Guitar", "Deutsch": "Gitarre"},
     {"Term": "horn, corno", "English": "Horn", "Deutsch": "Horn"},
-    {"Term": "posaune, trombone", "English": "Trombone", "Deutsch": "Posaune"},
-    {"Term": "tenorhorn", "English": "Tenorhorn", "Deutsch": "Tenorhorn"},
-    {"Term": "bariton, baritone", "English": "Baritone", "Deutsch": "Bariton"},
-    {"Term": "euphonium", "English": "Euphonium", "Deutsch": "Euphonium"},
-    {"Term": "tuba, bass", "English": "Tuba", "Deutsch": "Tuba"},
     {
-        "Term": "schlagzeug, drum set, drums",
-        "English": "Drum Set",
-        "Deutsch": "Schlagzeug",
+        "Term": "klarinette, clarinetto, clarinet",
+        "English": "Clarinet",
+        "Deutsch": "Klarinette",
     },
+    {"Term": "kornett, cornet", "English": "Cornet", "Deutsch": "Kornett"},
+    {"Term": "mallets, stabspiele", "English": "Mallets", "Deutsch": "Mallets"},
+    {"Term": "oboe", "English": "Oboe", "Deutsch": "Oboe"},
+    {"Term": "pauken, timpani", "English": "Timpani", "Deutsch": "Pauken"},
     {
         "Term": "percussion, perkussion",
         "English": "Percussion",
         "Deutsch": "Percussion",
     },
-    {"Term": "pauken, timpani", "English": "Timpani", "Deutsch": "Pauken"},
-    {"Term": "mallets, stabspiele", "English": "Mallets", "Deutsch": "Mallets"},
-    {"Term": "guitar, guitarre", "English": "Guitar", "Deutsch": "Gitarre"},
-    {"Term": "e-bass, electric bass", "English": "Electric Bass", "Deutsch": "E-Bass"},
     {"Term": "piano, klavier", "English": "Piano", "Deutsch": "Klavier"},
-    {"Term": "oboe", "English": "Oboe", "Deutsch": "Oboe"},
-    {"Term": "bassoon, fagott", "English": "Bassoon", "Deutsch": "Fagott"},
+    {"Term": "piccolo, pikkolo", "English": "Piccolo", "Deutsch": "Piccolo"},
+    {"Term": "posaune, trombone", "English": "Trombone", "Deutsch": "Posaune"},
+    {
+        "Term": "schlagzeug, drum set, drums",
+        "English": "Drum Set",
+        "Deutsch": "Schlagzeug",
+    },
+    {"Term": "tenorhorn", "English": "Tenorhorn", "Deutsch": "Tenorhorn"},
+    {
+        "Term": "tenorsaxophon, tenor sax, tenor saxophon, tenor saxophone,tenor-saxophon",
+        "English": "Tenor Saxophone",
+        "Deutsch": "Tenorsaxophon",
+    },
+    {"Term": "trompete, tromba, trumpet", "English": "Trumpet", "Deutsch": "Trompete"},
+    {"Term": "tuba, bass", "English": "Tuba", "Deutsch": "Tuba"},
 ]
-
 
 def load_mapping():
     if os.path.exists(MAPPING_FILE):
@@ -87,7 +91,7 @@ def load_mapping():
                 return mapping
         except Exception:
             pass
-    
+
     mapping = DEFAULT_MAPPING.copy()
     mapping.sort(key=lambda x: x.get("Term", "").lower())
     return mapping
@@ -138,18 +142,22 @@ def standardize_name(filename, target_language="English"):
             if single_key:
                 search_terms.append((single_key, targets))
 
-    # Sortiere Suchbegriffe nach Länge absteigend, die präzisesten (längsten) zuerst matchen
-    search_terms.sort(key=lambda x: len(x[0]), reverse=True)
-
+    # Sammle alle Matches und wähle den, der im Text am frühesten beginnt.
+    # Bei gleicher Startposition gewinnt der längere Term (z.B. "bass clarinet" vor "bass").
+    best = None  # (start_pos, -term_length, targets, span, term)
     for term, targets in search_terms:
-        # Einfaches prüfen, ob der Name des Instruments als wort oder wort-teil vorkommt
-        # Regex \b kombiniert mit simplem 'in', weil Umlaute Regex-Wordboundry brechen können
         match = re.search(r"(?i)\b" + re.escape(term) + r"\b", lower_name)
         if match:
-            instrument_match_span = match.span()
-            val = targets.get(target_language, targets.get("English", term))
-            recognized_instrument = val
-            break
+            candidate = (match.start(), -len(term), targets, match.span(), term)
+            if best is None or candidate < best:
+                best = candidate
+
+    if best is not None:
+        _, _, targets, span, term = best
+        instrument_match_span = span
+        recognized_instrument = targets.get(
+            target_language, targets.get("English", term)
+        )
 
     # Stimme (1, 2, 3...) - restrict search window to be near the instrument name
     voice = ""
