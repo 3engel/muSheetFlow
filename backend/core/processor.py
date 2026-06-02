@@ -258,6 +258,23 @@ def is_blank_page(image_pil, threshold=220, min_ink_pct=0.005):
     ink_pct = ink_pixels / total_pixels
     return ink_pct < min_ink_pct
 
+def auto_tight_bbox(image_pil, threshold=220, pad_px=35, min_ink_pct=0.005):
+    """
+    Tight bbox of ink within image_pil, padded by pad_px and clamped to bounds.
+    Returns None if the image is effectively blank (same convention as is_blank_page).
+    """
+    img_l = np.array(image_pil.convert("L"))
+    ink_mask = img_l < threshold
+    if ink_mask.sum() / ink_mask.size < min_ink_pct:
+        return None
+    ys, xs = np.where(ink_mask)
+    h, w = img_l.shape
+    left = max(0, int(xs.min()) - pad_px)
+    top = max(0, int(ys.min()) - pad_px)
+    right = min(w, int(xs.max()) + 1 + pad_px)
+    bottom = min(h, int(ys.max()) + 1 + pad_px)
+    return left, top, right, bottom
+
 def auto_deskew_cropped(image_pil, max_angle=3.0):
     """
     Auto-deskew via horizontal projection variance.
@@ -415,6 +432,7 @@ def apply_percentage_crop_and_center(
     auto_fix_deskew=False,
     enhance=False,
     output_format="A4 Portrait",
+    auto_tight_crop=False,
 ):
     w, h = image_pil.size
 
@@ -433,6 +451,11 @@ def apply_percentage_crop_and_center(
 
     if auto_fix_deskew and not is_preview:
         cropped = auto_deskew_cropped(cropped)
+
+    if auto_tight_crop and not is_preview:
+        bbox = auto_tight_bbox(cropped, pad_px=int((3 / 25.4) * dpi))
+        if bbox is not None:
+            cropped = cropped.crop(bbox)
 
     if output_format == "As cropped":
         final_canvas = cropped
@@ -488,6 +511,7 @@ def process_pdf_document_pct(
     target_language="English",
     jpeg_quality=70,
     output_format="A4 Portrait",
+    auto_tight_crop=False,
 ):
     pdf_document = fitz.open(pdf_path)
     output_pdf = fitz.open()
@@ -534,6 +558,7 @@ def process_pdf_document_pct(
                 auto_fix_deskew=auto_deskew_after,
                 enhance=auto_contrast,
                 output_format=output_format,
+                auto_tight_crop=auto_tight_crop,
             )
 
             img_byte_arr = io.BytesIO()

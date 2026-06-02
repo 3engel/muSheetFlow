@@ -126,6 +126,8 @@
     "contrastDesc": "Automatically improves the contrast of scanned scores. Works best when scores are slightly faded or unevenly lit.",
     "removeWhitePages": "Remove blank pages",
     "removeWhitePagesDesc": "Skips pages that contain (almost) no black pixels (notes).",
+    "autoTightCrop": "Auto tight crop per page",
+    "autoTightCropDesc": "Within the manual crop, detects the bounding box of the actual notes on each page and scales it to A4.",
     "quality": "Output quality",
     "outputFormat": "Output format",
     "selectOutputFormat": "Select format",

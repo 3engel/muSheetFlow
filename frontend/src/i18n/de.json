@@ -126,6 +126,8 @@
     "contrastDesc": "Verbessert automatisch den Kontrast der eingescannten Noten. Funktioniert am besten, wenn die Noten leicht verblasst oder ungleichmäßig beleuchtet sind.",
     "removeWhitePages": "Leere Seiten überspringen",
     "removeWhitePagesDesc": "Verwirft Seiten, die (fast) keine schwarzen Pixel (Noten) enthalten.",
+    "autoTightCrop": "Automatischer enger Zuschnitt pro Seite",
+    "autoTightCropDesc": "Erkennt innerhalb des manuellen Zuschnitts pro Seite den Bereich der Noten und skaliert ihn auf A4.",
     "quality": "Ausgabequalität",
     "outputFormat": "Ausgabeformat",
     "selectOutputFormat": "Format wählen",

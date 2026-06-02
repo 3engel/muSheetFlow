@@ -130,12 +130,14 @@ function RouteComponent() {
             autoDeskew={settings.auto_deskew ?? true}
             autoEnhance={settings.auto_enhance ?? true}
             removeWhitePages={settings.remove_white_pages ?? false}
+            autoTightCrop={settings.auto_tight_crop ?? false}
             jpegQuality={settings.jpeg_quality ?? 70}
             targetLang={settings.target_language}
             outputFormat={settings.output_format || "A4 Portrait"}
             onAutoDeskewChange={(v) => updateSettings({ auto_deskew: v })}
             onAutoEnhanceChange={(v) => updateSettings({ auto_enhance: v })}
             onRemoveWhitePagesChange={(v) => updateSettings({ remove_white_pages: v })}
+            onAutoTightCropChange={(v) => updateSettings({ auto_tight_crop: v })}
             onJpegQualityChange={(v) => updateSettings({ jpeg_quality: v })}
             onTargetLangChange={(v) => updateSettings({ target_language: v })}
             onOutputFormatChange={(v) => updateSettings({ output_format: v })}

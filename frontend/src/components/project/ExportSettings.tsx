@@ -41,12 +41,14 @@ export default function ExportSettings({
   autoDeskew,
   autoEnhance,
   removeWhitePages,
+  autoTightCrop,
   jpegQuality,
   targetLang,
   outputFormat,
   onAutoDeskewChange,
   onAutoEnhanceChange,
   onRemoveWhitePagesChange,
+  onAutoTightCropChange,
   onJpegQualityChange,
   onTargetLangChange,
   onOutputFormatChange,
@@ -59,12 +61,14 @@ export default function ExportSettings({
   autoDeskew: boolean;
   autoEnhance: boolean;
   removeWhitePages: boolean;
+  autoTightCrop: boolean;
   jpegQuality: number;
   targetLang: string;
   outputFormat: string;
   onAutoDeskewChange: (v: boolean) => void;
   onAutoEnhanceChange: (v: boolean) => void;
   onRemoveWhitePagesChange: (v: boolean) => void;
+  onAutoTightCropChange: (v: boolean) => void;
   onJpegQualityChange: (v: number) => void;
   onTargetLangChange: (v: string) => void;
   onOutputFormatChange: (v: string) => void;
@@ -84,6 +88,7 @@ export default function ExportSettings({
         auto_deskew: autoDeskew,
         auto_enhance: autoEnhance,
         remove_white_pages: removeWhitePages,
+        auto_tight_crop: autoTightCrop,
         jpeg_quality: jpegQuality,
       });
     },
@@ -154,6 +159,21 @@ export default function ExportSettings({
                 <FieldTitle>{t("export.removeWhitePages")}</FieldTitle>
                 <FieldDescription>
                   {t("export.removeWhitePagesDesc")}
+                </FieldDescription>
+              </FieldContent>
+            </Field>
+            <Field orientation="horizontal">
+              <Checkbox
+                id="auto-tight-crop"
+                name="auto-tight-crop"
+                checked={autoTightCrop}
+                onCheckedChange={(v) => onAutoTightCropChange(!!v)}
+              />
+
+              <FieldContent>
+                <FieldTitle>{t("export.autoTightCrop")}</FieldTitle>
+                <FieldDescription>
+                  {t("export.autoTightCropDesc")}
                 </FieldDescription>
               </FieldContent>
             </Field>

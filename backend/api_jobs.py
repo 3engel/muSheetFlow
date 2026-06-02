@@ -15,6 +15,7 @@ class ExportJobRequest(BaseModel):
     auto_deskew: bool = True
     auto_enhance: bool = True
     remove_white_pages: bool = False
+    auto_tight_crop: bool = False
     jpeg_quality: int = 70
     output_format: str = "A4 Portrait"
 
@@ -49,6 +50,7 @@ def _process_single_file(filename, project_path, job_dir, req):
         auto_deskew_after=req.auto_deskew,
         auto_contrast=req.auto_enhance,
         remove_white_pages=req.remove_white_pages,
+        auto_tight_crop=req.auto_tight_crop,
         jpeg_quality=req.jpeg_quality,
         output_format=req.output_format,
     )
