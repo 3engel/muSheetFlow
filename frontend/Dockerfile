@@ -21,7 +21,7 @@ EXPOSE 80
 # and reverse proxy /api/ to the backend
 RUN echo 'server { \
     listen 80; \
-    client_max_body_size 100M; \
+    client_max_body_size 500M; \
     location / { \
         root /usr/share/nginx/html; \
         index index.html index.htm; \
@@ -31,7 +31,7 @@ RUN echo 'server { \
         proxy_pass http://backend:8000/; \
         proxy_set_header Host $host; \
         proxy_set_header X-Real-IP $remote_addr; \
-        client_max_body_size 100M; \
+        client_max_body_size 500M; \
     } \
 }' > /etc/nginx/conf.d/default.conf
 
