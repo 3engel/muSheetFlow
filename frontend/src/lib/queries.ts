@@ -134,7 +134,7 @@ export const projectsQueryOptions = () =>
 export const projectCreateMutationOptions = () => {
   return mutationOptions({
     mutationFn: (newProjectName: string) => {
-      return api.post("/projects/", { name: newProjectName });
+      return api.post("/projects/", { name: newProjectName.trim() });
     },
 
     onError: (error, variables) => {
@@ -148,7 +148,7 @@ export const projectCreateMutationOptions = () => {
 
 export const projectDeleteMutationOptions = () => {
   return mutationOptions({
-    mutationFn: (id: string) => api.delete(`/projects/${id}`),
+    mutationFn: (id: string) => api.delete(`/projects/${encodeURIComponent(id)}`),
     onError: (error, variables) => {
       console.error(error);
       toast.error(`Fehler beim Löschen des Projekts "${variables}".`, {
@@ -163,14 +163,14 @@ export const projectFilesQueryOptions = (projectName: string) =>
   queryOptions({
     queryKey: ["project-files", projectName],
     queryFn: async () => {
-      const res = await api.get<FileInfo[]>(`/projects/${projectName}/files`);
+      const res = await api.get<FileInfo[]>(`/projects/${encodeURIComponent(projectName)}/files`);
       return res.data || [];
     },
   })
 
 export const projectFilesDeleteMutationOptions = () => {
   return mutationOptions({
-    mutationFn: ({ projectName, files }: { projectName: string; files: string[] }) => api.delete(`/projects/${projectName}/files`, { data: files }),
+    mutationFn: ({ projectName, files }: { projectName: string; files: string[] }) => api.delete(`/projects/${encodeURIComponent(projectName)}/files`, { data: files }),
     onError: (error, variables) => {
       console.error(error);
       toast.error(`Fehler beim Löschen der Dateien im Projekt "${variables.projectName}".`, {
@@ -184,7 +184,7 @@ export const analyzeVoicesMutationOptions = () => {
   return mutationOptions({
     mutationFn: async ({ projectName, filename, targetLanguage }: { projectName: string; filename: string; targetLanguage: string }) => {
       const res = await api.post<VoiceAnalysis>(
-        `/projects/${projectName}/files/${encodeURIComponent(filename)}/analyze-voices?target_language=${encodeURIComponent(targetLanguage)}`,
+        `/projects/${encodeURIComponent(projectName)}/files/${encodeURIComponent(filename)}/analyze-voices?target_language=${encodeURIComponent(targetLanguage)}`,
       );
       return res.data;
     },
@@ -209,7 +209,7 @@ export const splitVoicesMutationOptions = () => {
       deleteOriginal: boolean;
     }) => {
       const res = await api.post<{ status: string; created_files: string[] }>(
-        `/projects/${projectName}/files/${encodeURIComponent(filename)}/split-voices`,
+        `/projects/${encodeURIComponent(projectName)}/files/${encodeURIComponent(filename)}/split-voices`,
         { groups, delete_original: deleteOriginal },
       );
       return res.data;
@@ -225,7 +225,7 @@ export const projectSettingsQueryOptions = (projectName: string) =>
   queryOptions({
     queryKey: ["project-settings", projectName],
     queryFn: async () => {
-      const res = await api.get<ProjectSettings>(`/projects/${projectName}/settings`);
+      const res = await api.get<ProjectSettings>(`/projects/${encodeURIComponent(projectName)}/settings`);
       return res.data;
     },
   })
@@ -233,7 +233,7 @@ export const projectSettingsQueryOptions = (projectName: string) =>
 export const projectSettingsMutationOptions = () => {
   return mutationOptions({
     mutationFn: ({ projectName, settings }: { projectName: string; settings: ProjectSettings }) =>
-      api.put(`/projects/${projectName}/settings`, settings),
+      api.put(`/projects/${encodeURIComponent(projectName)}/settings`, settings),
     onMutate: async ({ projectName, settings }) => {
       await queryClient.cancelQueries({ queryKey: ["project-settings", projectName] });
       queryClient.setQueryData(["project-settings", projectName], settings);

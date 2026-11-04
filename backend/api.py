@@ -10,7 +10,7 @@ import os
 import shutil
 import uvicorn
 import io
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from datetime import datetime
 
 # Wir importieren hier die existierende Logik für das Overlay
@@ -49,6 +49,14 @@ app.mount("/exports", StaticFiles(directory=OUTPUT_DIR), name="exports")
 
 class ProjectCreate(BaseModel):
     name: str
+
+    @field_validator("name")
+    @classmethod
+    def strip_name(cls, v: str) -> str:
+        v = v.strip()
+        if not v:
+            raise ValueError("Project name must not be empty")
+        return v
 
 
 class ProjectSettings(BaseModel):
@@ -551,7 +559,13 @@ async def delete_project(project_name: str):
     import shutil
 
     project_path = os.path.join(UPLOAD_DIR, project_name)
-    if os.path.exists(project_path):
+    if not os.path.isdir(project_path) and os.path.isdir(UPLOAD_DIR):
+        # Fallback for legacy projects created with leading/trailing whitespace
+        for d in os.listdir(UPLOAD_DIR):
+            if d.strip() == project_name.strip() and os.path.isdir(os.path.join(UPLOAD_DIR, d)):
+                project_path = os.path.join(UPLOAD_DIR, d)
+                break
+    if os.path.isdir(project_path):
         shutil.rmtree(project_path)
         return {"status": "success", "message": f"Project {project_name} deleted"}
     return Response(status_code=404)

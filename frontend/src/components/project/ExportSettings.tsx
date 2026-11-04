@@ -79,7 +79,7 @@ export default function ExportSettings({
 
   const exportMutation = useMutation({
     mutationFn: async () => {
-      return api.post(`/projects/${project}/export`, {
+      return api.post(`/projects/${encodeURIComponent(project)}/export`, {
         rotation,
         do_split: doSplit,
         crop: { x: crop.x, y: crop.y, width: crop.width, height: crop.height },

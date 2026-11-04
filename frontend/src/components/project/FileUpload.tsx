@@ -64,7 +64,7 @@ export default function FileUpload({
 
   const uploadMutation = useMutation({
     mutationFn: async (formData: FormData) => {
-      await api.post(`/projects/${project}/upload`, formData, {
+      await api.post(`/projects/${encodeURIComponent(project)}/upload`, formData, {
         onUploadProgress: (progressEvent) => {
           const progress = Math.round(
             (progressEvent.loaded * 100) / (progressEvent.total || 1),

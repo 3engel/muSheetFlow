@@ -36,7 +36,7 @@ export default function CropTool({
   }, [crop]);
 
   const imageUrl = useMemo(() => {
-    return `${API_BASE_URL}/projects/${project}/overlay?base_rotation=${rotation}&do_split=${doSplit}&single_file=false`;
+    return `${API_BASE_URL}/projects/${encodeURIComponent(project)}/overlay?base_rotation=${rotation}&do_split=${doSplit}&single_file=false`;
   }, [project, rotation, doSplit]);
 
   return (

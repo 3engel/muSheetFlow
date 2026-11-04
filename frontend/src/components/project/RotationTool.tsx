@@ -40,7 +40,7 @@ export default function RotationTool({
   };
 
   const imageUrl = useMemo(() => {
-    return `${API_BASE_URL}/projects/${project}/overlay?base_rotation=${rotation}&do_split=${doSplit}&single_file=true&t=${Date.now()}`;
+    return `${API_BASE_URL}/projects/${encodeURIComponent(project)}/overlay?base_rotation=${rotation}&do_split=${doSplit}&single_file=true&t=${Date.now()}`;
   }, [project, rotation, doSplit]);
 
   useEffect(() => {

@@ -97,13 +97,13 @@ function RouteComponent() {
             value={newProjectName}
             onChange={(e) => setNewProjectName(e.target.value)}
             onKeyDown={(e) =>
-              e.key === "Enter" && newProjectMutation.mutate(newProjectName)
+              e.key === "Enter" && newProjectMutation.mutate(newProjectName.trim())
             }
           />
         </CardContent>
         <CardFooter>
           <Button
-            onClick={() => newProjectMutation.mutate(newProjectName)}
+            onClick={() => newProjectMutation.mutate(newProjectName.trim())}
             size="lg"
             className="w-full text-base"
             disabled={
