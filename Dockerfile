@@ -31,6 +31,9 @@ EXPOSE 8000
 # --- Production image: API + frontend in one container ---
 FROM backend AS runner
 
+# Links the ghcr package to the GitHub repository
+LABEL org.opencontainers.image.source=https://github.com/3engel/muSheetFlow
+
 COPY backend/ .
 COPY --from=frontend-build /frontend/dist ./static
 

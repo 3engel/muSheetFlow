@@ -38,6 +38,40 @@ docker compose -f docker-compose.prod.yml up -d
 
 - App: http://localhost:3000
 
+### Run with Podman Quadlet (server)
+
+Create `~/.config/containers/systemd/musheetflow.container` (rootful: `/etc/containers/systemd/`):
+
+```ini
+[Unit]
+Description=muSheetFlow
+Wants=network-online.target
+After=network-online.target
+
+[Container]
+Image=ghcr.io/3engel/musheetflow:latest
+ContainerName=muSheetFlow
+AutoUpdate=registry
+PublishPort=3000:8000
+Volume=/path/to/musheetflow/data:/app/data:Z
+Environment=DATA_DIR=/app/data
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
+```
+
+Behind a reverse proxy, drop `PublishPort` and attach the container to the proxy's network instead; the app listens on port 8000.
+
+```bash
+systemctl --user daemon-reload                                   # rootful: without --user
+systemctl --user start musheetflow
+```
+
+Logs: `journalctl --user -u musheetflow -f`
+
 ### Run with Docker Compose (development, hot reload)
 
 ```bash
