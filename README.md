@@ -27,10 +27,21 @@ A full-stack application for processing and organizing music sheet documents. It
 - Docker & Docker Compose **or**
 - Python 3.x + Node.js 18+ + Tesseract OCR (`apt install tesseract-ocr tesseract-ocr-deu tesseract-ocr-ita`)
 
-### Run with Docker Compose
+### Run with Docker (production)
+
+The app ships as a single image: FastAPI serves the API under `/api` and the built frontend.
 
 ```bash
-docker-compose up --build
+./docker-build.sh                                # build ghcr.io/3engel/musheetflow:latest
+docker compose -f docker-compose.prod.yml up -d
+```
+
+- App: http://localhost:3000
+
+### Run with Docker Compose (development, hot reload)
+
+```bash
+docker compose up --build
 ```
 
 - Backend: http://localhost:8000
@@ -60,8 +71,11 @@ cd frontend && npm run start-all
 
 ```
 muSheetFlow/
-├── docker-compose.yml
+├── Dockerfile                  # Single production image (frontend build + backend)
+├── docker-compose.yml          # Development setup
+├── docker-compose.prod.yml     # Production setup
 ├── backend/
+│   ├── main.py                 # Production entrypoint (API under /api + frontend)
 │   ├── api.py                  # Project & file endpoints
 │   ├── api_jobs.py             # Job processing endpoints
 │   ├── core/
